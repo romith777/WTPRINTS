@@ -5,6 +5,7 @@
 let type = JSON.parse(localStorage.getItem('product_type'));
 let favList = JSON.parse(localStorage.getItem("favList")) || {};
 let cart = JSON.parse(localStorage.getItem('cart')) || {};
+console.log(tees);
 
 // Normalize cart data structure
 Object.keys(cart).forEach(productId => {
@@ -104,7 +105,7 @@ function initializeApp() {
 
     function navigateToProduct(product) {
         localStorage.setItem('currentProduct', JSON.stringify(product));
-        window.location.href = `./productSinglePage.html?id=${product.id}`;
+        window.location.href = `./productSinglePage.html?id=${product._id}`;
     }
 
     function storeProduct(productId) {
@@ -122,8 +123,8 @@ function initializeApp() {
             `
                 <div class="browse-card">
                     <div class="browse-card-img">
-                        <a href="./productSinglePage.html?id=${product.id}" style="cursor: pointer;" onclick="storeProduct('${product.id}')">
-                            <img src="${product.image}" alt="${product.name}">
+                        <a href="./productSinglePage.html?id=${product._id}&type=${product.productType}" style="cursor: pointer;" onclick="storeProduct('${product._id}')">
+                            <img src="${product.image[0]}" alt="${product.name}">
                         </a>
                     </div>
                     <div class="browse-card-information">
@@ -134,10 +135,10 @@ function initializeApp() {
                                 <p class="browse-card-information-text">Price: $<span class="browse-card-information-price">${formatCurrency(product.priceCents)}</span></p>
                             </div>
                             <div class="browse-card-information-area-wishlist">
-                                <img src="../assets/favourites-icon-unclick.png" class="browse-card-wishlist" data-product-id="${product.id}" data-is-checked="${localStorage.getItem(`${product.id}-fav-status`)||"unchecked"}" >
+                                <img src="../assets/favourites-icon-unclick.png" class="browse-card-wishlist" data-product-id="${product._id}" data-is-checked="${localStorage.getItem(`${product._id}-fav-status`)||"unchecked"}" >
                             </div>
                         </div>
-                        <button class="add-to-cart-button js-cart-button" data-product-id=${product.id}>Add To Cart</button>
+                        <button class="add-to-cart-button js-cart-button" data-product-id=${product._id}>Add To Cart</button>
                     </div>
                 </div>
             `
@@ -175,13 +176,13 @@ function initializeApp() {
         
         shuffled.forEach(product => {
             relatedHTML += `
-                <div class="related-product-card" data-product-id="${product.id}">
-                    <div class="related-product-img">
-                        <img src="${product.image}" alt="${product.name}">
+                <div class="related-product-card" data-product-id="${product._id}">
+                    <div class="related-product-img" onclick='window.location.href = "./productSinglePage.html?id=${product._id}&type=${product.productType}"'>
+                        <img src="${product.image[0]}" alt="${product.name}">
                     </div>
                     <div class="related-product-info">
                         <h4>${product.brandName}</h4>
-                        <p>${product.about}</p>
+                        <p>${product.name}</p>
                         <p class="related-product-price">$${formatCurrency(product.priceCents)}</p>
                     </div>
                 </div>
@@ -429,7 +430,8 @@ function initializeApp() {
                 e.stopPropagation();
                 let productId = button.dataset.productId;
                 
-                const result = type.find(item => item.id === productId);
+                const result = type.find(item => item._id === productId);
+                console.log(result);
                 
                 // Create unique cartKey with default size M for quick-add
                 const defaultSize = 'M';

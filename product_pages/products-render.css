@@ -272,7 +272,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
 }
 
 .browse-card:hover .browse-card-img img{
@@ -326,7 +325,6 @@
     width: 24px;
     height: 24px;
     cursor: pointer;
-    transition: transform 0.3s;
 }
 
 .browse-card-wishlist:hover{
@@ -379,7 +377,6 @@
 .related-product-card:hover{
     box-shadow: 0 8px 25px rgba(238, 6, 82, 0.15);
     border-color: #ee0652;
-    transform: translateY(-5px);
 }
 
 .related-product-img{
@@ -424,7 +421,6 @@
 .slider-btn{
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     background-color: white;
     border: 2px solid #ee0652;
     color: #ee0652;

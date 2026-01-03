@@ -6,7 +6,7 @@
 
 a{
     color: black;
-    background-color: none;
+    background-color: none; 
     text-decoration: none;
     -webkit-user-drag: none;
     cursor: pointer;

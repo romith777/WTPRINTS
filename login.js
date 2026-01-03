@@ -33,46 +33,46 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const urlParams = new URLSearchParams(window.location.search);
 
     // Check for signup token in sessionStorage
-    const signupToken = sessionStorage.getItem('signupToken');
-    if (signupToken) {
-        try {
-            const signupData = JSON.parse(signupToken);
+    // const signupToken = sessionStorage.getItem('signupToken');
+    // if (signupToken) {
+    //     try {
+    //         const signupData = JSON.parse(signupToken);
             
-            // Show signup box
-            document.querySelector(".login-box").style.display = 'none';
-            document.querySelector(".signup-box").style.display = 'block';
+    //         // Show signup box
+    //         document.querySelector(".login-box").style.display = 'none';
+    //         document.querySelector(".signup-box").style.display = 'block';
             
-            // If OTP was sent, show OTP form
-            if (signupData.otpSent) {
-                document.getElementById('requestOtpForm').style.display = 'none';
-                document.getElementById('verifyOtpForm').style.display = 'flex';
+    //         // If OTP was sent, show OTP form
+    //         if (signupData.otpSent) {
+    //             document.getElementById('requestOtpForm').style.display = 'none';
+    //             document.getElementById('verifyOtpForm').style.display = 'flex';
                 
-                // Show info message
-                document.getElementById('signup-message').style.display = 'block';
-                document.getElementById('signup-message').style.backgroundColor = '#d4edda';
-                document.getElementById('signup-message').style.color = '#155724';
-                document.getElementById('signup-message').innerHTML = 'OTP sent to ' + signupData.email;
-            } else {
-                // Show request form with saved data
-                document.getElementById('requestOtpForm').style.display = 'flex';
-                document.getElementById('verifyOtpForm').style.display = 'none';
+    //             // Show info message
+    //             document.getElementById('signup-message').style.display = 'block';
+    //             document.getElementById('signup-message').style.backgroundColor = '#d4edda';
+    //             document.getElementById('signup-message').style.color = '#155724';
+    //             document.getElementById('signup-message').innerHTML = 'OTP sent to ' + signupData.email;
+    //         } else {
+    //             // Show request form with saved data
+    //             document.getElementById('requestOtpForm').style.display = 'flex';
+    //             document.getElementById('verifyOtpForm').style.display = 'none';
                 
-                // Populate form fields
-                if (signupData.username) {
-                    document.querySelector('#requestOtpForm input[name="username"]').value = signupData.username;
-                }
-                if (signupData.email) {
-                    document.querySelector('#requestOtpForm input[name="email"]').value = signupData.email;
-                }
-                if (signupData.password) {
-                    document.querySelector('#requestOtpForm input[name="password"]').value = signupData.password;
-                }
-            }
-        } catch (e) {
-            console.error('Error parsing signup token:', e);
-            sessionStorage.removeItem('signupToken');
-        }
-    }
+    //             // Populate form fields
+    //             if (signupData.username) {
+    //                 document.querySelector('#requestOtpForm input[name="username"]').value = signupData.username;
+    //             }
+    //             if (signupData.email) {
+    //                 document.querySelector('#requestOtpForm input[name="email"]').value = signupData.email;
+    //             }
+    //             if (signupData.password) {
+    //                 document.querySelector('#requestOtpForm input[name="password"]').value = signupData.password;
+    //             }
+    //         }
+    //     } catch (e) {
+    //         console.error('Error parsing signup token:', e);
+    //         sessionStorage.removeItem('signupToken');
+    //     }
+    // }
 
     // common css for error messages
     if(urlParams.get('signup') === 'exists' || urlParams.get('login') === 'nouser'){
@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
     // for signup
     if(urlParams.get('signup') === 'success'){
         // Clear signup token on successful signup
-        sessionStorage.removeItem('signupToken');
-        
+        // sessionStorage.removeItem('signupToken');
+        document.querySelector('.signup-box').display = 'none';
         document.getElementById('login-message').style.display = 'block';
         document.getElementById('login-message').style.backgroundColor = '#d4edda';
         document.getElementById('login-message').style.color = '#155724';
@@ -147,27 +147,27 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
 
     // Step 1: Request OTP
-    let requestOtpForm = document.getElementById('requestOtpForm');
-    requestOtpForm.addEventListener('submit', async (e) => {
+    let signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         // Store signup data in sessionStorage
         const signupData = {
-            username: requestOtpForm.username.value,
-            email: requestOtpForm.email.value,
-            password: requestOtpForm.password.value,
-            otpSent: false
+            username: signupForm.username.value,
+            email: signupForm.email.value,
+            password: signupForm.password.value,
         };
         
         sessionStorage.setItem('signupToken', JSON.stringify(signupData));
         
         try {
-            const res = await fetch(`${API_URI}/request-otp`, {
+            const res = await fetch(`${API_URI}/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     username: signupData.username,
-                    email: signupData.email
+                    email: signupData.email,
+                    password: signupData.password
                 })
             });
             
@@ -175,23 +175,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
             
             if (result.status === 'success') {
                 // Update token with otpSent flag
-                signupData.otpSent = true;
-                sessionStorage.setItem('signupToken', JSON.stringify(signupData));
+                // signupData.otpSent = true;
+                // sessionStorage.setItem('signupToken', JSON.stringify(signupData));
                 
                 // Show OTP form, hide request form
-                document.getElementById('requestOtpForm').style.display = 'none';
-                document.getElementById('verifyOtpForm').style.display = 'flex';
+                // document.getElementById('requestOtpForm').style.display = 'none';
+                // document.getElementById('verifyOtpForm').style.display = 'flex';
                 
-                document.getElementById('signup-message').style.display = 'block';
-                document.getElementById('signup-message').style.backgroundColor = '#d4edda';
-                document.getElementById('signup-message').style.color = '#155724';
-                document.getElementById('signup-message').innerHTML = 'OTP sent to your email!';
+                // document.getElementById('signup-message').style.display = 'block';
+                // document.getElementById('signup-message').style.backgroundColor = '#d4edda';
+                // document.getElementById('signup-message').style.color = '#155724';
+                // document.getElementById('signup-message').innerHTML = 'OTP sent to your email!';
                 
+                window.location.href = 'login.html?signup=success';
+
                 setTimeout(() => {
                     document.getElementById('signup-message').style.display = 'none';
                 }, 4000);
             } else if (result.status === 'exists') {
-                sessionStorage.removeItem('signupToken');
+                // sessionStorage.removeItem('signupToken');
                 
                 document.getElementById('signup-message').style.display = 'block';
                 document.getElementById('signup-message').style.backgroundColor = 'rgb(238, 82, 82)';
@@ -202,7 +204,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                     document.getElementById('signup-message').style.display = 'none';
                 }, 4000);
             } else {
-                alert('Error sending OTP');
+                alert('Error signing up');
             }
         } catch (err) {
             console.error(err);
@@ -211,109 +213,109 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
 
     // Step 2: Verify OTP
-    let verifyOtpForm = document.getElementById('verifyOtpForm');
-    verifyOtpForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+    // let verifyOtpForm = document.getElementById('verifyOtpForm');
+    // verifyOtpForm.addEventListener('submit', async (e) => {
+    //     e.preventDefault();
         
-        const otp = verifyOtpForm.otp.value;
-        const signupToken = sessionStorage.getItem('signupToken');
+    //     const otp = verifyOtpForm.otp.value;
+    //     const signupToken = sessionStorage.getItem('signupToken');
         
-        if (!signupToken) {
-            alert('Session expired. Please start again.');
-            location.reload();
-            return;
-        }
+    //     if (!signupToken) {
+    //         alert('Session expired. Please start again.');
+    //         location.reload();
+    //         return;
+    //     }
         
-        const signupData = JSON.parse(signupToken);
+    //     const signupData = JSON.parse(signupToken);
         
-        try {
-            const res = await fetch(`${API_URI}/verify-otp`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: signupData.username,
-                    email: signupData.email,
-                    password: signupData.password,
-                    otp
-                })
-            });
+    //     try {
+    //         const res = await fetch(`${API_URI}/verify-otp`, {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({
+    //                 username: signupData.username,
+    //                 email: signupData.email,
+    //                 password: signupData.password,
+    //                 otp
+    //             })
+    //         });
             
-            const result = await res.json();
+    //         const result = await res.json();
             
-            if (result.status === 'success') {
-                sessionStorage.removeItem('signupToken');
-                window.location.href = 'login.html?signup=success';
-            } else if (result.status === 'invalid') {
-                document.getElementById('signup-message').style.display = 'block';
-                document.getElementById('signup-message').style.backgroundColor = 'rgb(238, 82, 82)';
-                document.getElementById('signup-message').style.color = 'white';
-                document.getElementById('signup-message').innerHTML = 'Invalid or expired OTP';
+    //         if (result.status === 'success') {
+    //             sessionStorage.removeItem('signupToken');
+    //             window.location.href = 'login.html?signup=success';
+    //         } else if (result.status === 'invalid') {
+    //             document.getElementById('signup-message').style.display = 'block';
+    //             document.getElementById('signup-message').style.backgroundColor = 'rgb(238, 82, 82)';
+    //             document.getElementById('signup-message').style.color = 'white';
+    //             document.getElementById('signup-message').innerHTML = 'Invalid or expired OTP';
                 
-                setTimeout(() => {
-                    document.getElementById('signup-message').style.display = 'none';
-                }, 4000);
-            } else {
-                alert('Error verifying OTP');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Server error');
-        }
-    });
+    //             setTimeout(() => {
+    //                 document.getElementById('signup-message').style.display = 'none';
+    //             }, 4000);
+    //         } else {
+    //             alert('Error verifying OTP');
+    //         }
+    //     } catch (err) {
+    //         console.error(err);
+    //         alert('Server error');
+    //     }
+    // });
 
     // Resend OTP
-    document.getElementById('resendOtpBtn').addEventListener('click', async () => {
-        const signupToken = sessionStorage.getItem('signupToken');
+    // document.getElementById('resendOtpBtn').addEventListener('click', async () => {
+    //     const signupToken = sessionStorage.getItem('signupToken');
         
-        if (!signupToken) {
-            alert('Session expired. Please start again.');
-            location.reload();
-            return;
-        }
+    //     if (!signupToken) {
+    //         alert('Session expired. Please start again.');
+    //         location.reload();
+    //         return;
+    //     }
         
-        const signupData = JSON.parse(signupToken);
+    //     const signupData = JSON.parse(signupToken);
         
-        try {
-            const res = await fetch(`${API_URI}/request-otp`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: signupData.username,
-                    email: signupData.email
-                })
-            });
+    //     try {
+    //         const res = await fetch(`${API_URI}/request-otp`, {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({
+    //                 username: signupData.username,
+    //                 email: signupData.email
+    //             })
+    //         });
             
-            const result = await res.json();
+    //         const result = await res.json();
             
-            if (result.status === 'success') {
-                document.getElementById('signup-message').style.display = 'block';
-                document.getElementById('signup-message').style.backgroundColor = '#d4edda';
-                document.getElementById('signup-message').style.color = '#155724';
-                document.getElementById('signup-message').innerHTML = 'New OTP sent!';
+    //         if (result.status === 'success') {
+    //             document.getElementById('signup-message').style.display = 'block';
+    //             document.getElementById('signup-message').style.backgroundColor = '#d4edda';
+    //             document.getElementById('signup-message').style.color = '#155724';
+    //             document.getElementById('signup-message').innerHTML = 'New OTP sent!';
                 
-                setTimeout(() => {
-                    document.getElementById('signup-message').style.display = 'none';
-                }, 4000);
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Error resending OTP');
-        }
-    });
+    //             setTimeout(() => {
+    //                 document.getElementById('signup-message').style.display = 'none';
+    //             }, 4000);
+    //         }
+    //     } catch (err) {
+    //         console.error(err);
+    //         alert('Error resending OTP');
+    //     }
+    // });
 
     // Back button in OTP form
-    const backToFormBtn = document.getElementById('backToFormBtn');
-    if (backToFormBtn) {
-        backToFormBtn.addEventListener('click', () => {
-            const signupToken = sessionStorage.getItem('signupToken');
-            if (signupToken) {
-                const signupData = JSON.parse(signupToken);
-                signupData.otpSent = false;
-                sessionStorage.setItem('signupToken', JSON.stringify(signupData));
-            }
+    // const backToFormBtn = document.getElementById('backToFormBtn');
+    // if (backToFormBtn) {
+    //     backToFormBtn.addEventListener('click', () => {
+    //         const signupToken = sessionStorage.getItem('signupToken');
+    //         if (signupToken) {
+    //             const signupData = JSON.parse(signupToken);
+    //             signupData.otpSent = false;
+    //             sessionStorage.setItem('signupToken', JSON.stringify(signupData));
+    //         }
             
-            document.getElementById('verifyOtpForm').style.display = 'none';
-            document.getElementById('requestOtpForm').style.display = 'flex';
-        });
-    }
+    //         document.getElementById('verifyOtpForm').style.display = 'none';
+    //         document.getElementById('requestOtpForm').style.display = 'flex';
+    //     });
+    // }
 });

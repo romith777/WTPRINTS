@@ -107,7 +107,6 @@ body{
 
 .shop-now-btn:hover{
     background-color: #c00545;
-    transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(238, 6, 82, 0.4);
 }
 
@@ -139,11 +138,6 @@ body{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.browse-card:hover .browse-card-img img{
-    transform: scale(1.05);
 }
 
 .browse-card-information{
@@ -202,7 +196,6 @@ body{
 
 .add-to-cart-button:hover{
     background-color: #c00545;
-    transform: translateY(-2px);
 }
 
 .js-fav-remove{

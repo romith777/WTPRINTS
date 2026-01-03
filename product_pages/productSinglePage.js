@@ -7,6 +7,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || {};
 let favList = JSON.parse(localStorage.getItem('favList')) || {};
 
 let allProducts = [];
+console.log(tees);
 let productsInitialized = false;
 
 function formatCurrency(priceCents){
@@ -22,9 +23,14 @@ function toggleMobileMenu(){
 function getProductFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
+    const productType = urlParams.get('type');
     
     if (productId && allProducts.length > 0) {
-        currentProduct = allProducts.find(p => p.id === productId);
+        for(i in allProducts){
+            if(allProducts[i]._id === productId)
+                currentProduct = allProducts[i];
+        }
+        console.log("currentProduct",currentProduct);
     }
     
     if (!currentProduct) {
@@ -49,15 +55,17 @@ function renderProductDetail(product) {
         return;
     }
     
-    const isFavorite = localStorage.getItem(`${product.id}-fav-status`) === 'checked';
+    const isFavorite = localStorage.getItem(`${product._id}-fav-status`) === 'checked';
+    let additionalImages = product.image.slice(1,product.image.size);
+
     
     const html = `
         <div class="product-detail-container">
             <div class="product-image-section">
-                <img src="${product.image}" alt="${product.name}" class="product-main-image" id="mainImage">
+                <img src="${product.image[0]}" alt="${product.name}" class="product-main-image" id="mainImage">
                 <div class="product-thumbnails">
-                    <img src="${product.image}" alt="Thumbnail 1" class="product-thumbnail active" onclick="changeMainImage('${product.image}', this)">
-                    ${product.additionalImages ? product.additionalImages.map(img => 
+                    <img src="${product.image[0]}" alt="Thumbnail 1" class="product-thumbnail active" onclick="changeMainImage('${product.image[0]}', this)">
+                    ${additionalImages ? additionalImages.map(img => 
                         `<img src="${img}" alt="Thumbnail" class="product-thumbnail" onclick="changeMainImage('${img}', this)">`
                     ).join('') : ''}
                 </div>
@@ -65,11 +73,11 @@ function renderProductDetail(product) {
             
             <div class="product-info-section">
                 <p class="product-brand">${product.brandName}</p>
-                <h1 class="product-name">${product.about}</h1>
+                <h1 class="product-name">${product.name}</h1>
                 <div class="product-price">$${formatCurrency(product.priceCents)}</div>
                 
                 <p class="product-description">
-                    ${product.description || 'High-quality product made with premium materials. Perfect for everyday wear and designed for maximum comfort and style.'}
+                    ${product.about || 'High-quality product made with premium materials. Perfect for everyday wear and designed for maximum comfort and style.'}
                 </p>
                 
                 <div class="size-selection">
@@ -129,7 +137,11 @@ function shuffleArray(array) {
 function renderRelatedProducts(currentProduct) {
     if (!currentProduct || allProducts.length === 0) return;
     
-    let availableProducts = allProducts.filter(p => p.id !== currentProduct.id);
+    let availableProducts = [];
+    for(i in allProducts){
+        if(allProducts[i]._id != currentProduct._id)
+            availableProducts.push(allProducts[i]);    
+    }
     let randomizedProducts = shuffleArray(availableProducts);
     let relatedProducts = randomizedProducts.slice(0, 10);
     
@@ -144,9 +156,9 @@ function renderRelatedProducts(currentProduct) {
             </div>
             <div class="related-products-container">
                 ${relatedProducts.map(product => `
-                    <div class="related-product-card" onclick="goToProduct('${product.id}')">
+                    <div class="related-product-card" onclick="goToProduct('${product._id}')">
                         <div class="related-product-img">
-                            <img src="${product.image}" alt="${product.name}">
+                            <img src="${product.image[0]}" alt="${product.name}">
                         </div>
                         <div class="related-product-info">
                             <h4>${product.brandName}</h4>
@@ -264,13 +276,14 @@ function renderFooter() {
 function initializeProductPage() {
     if (productsInitialized) return;
     
-    allProducts = [...tees, ...hoodies, ...cargos];
+    allProducts = [...tees, ...hoodies, ...cargos, ...jeans, ...shirts, ...joggers];
+    // console.log(allProducts);
     
     const product = getProductFromURL();
     
     if (product) {
         currentProduct = product;
-        // console.log('Displaying product:', product);
+        console.log('Displaying product:', product);
         const titleElement = document.querySelector('.js-product-type-product');
         if (titleElement) {
             titleElement.textContent = `${product.brandName} - WTP`;
@@ -338,7 +351,7 @@ window.addToCart = function() {
     // console.log(currentProduct);
     if (!currentProduct) return;
     
-    const productId = currentProduct.id;
+    const productId = currentProduct._id;
     const freshCart = JSON.parse(localStorage.getItem('cart')) || {};
     const cartKey = `${productId}-${selectedSize}`;
     
@@ -381,7 +394,7 @@ window.addToCart = function() {
 window.toggleFavorite = function() {
     if (!currentProduct) return;
     
-    const productId = currentProduct.id;
+    const productId = currentProduct._id;
     const isFavorite = localStorage.getItem(`${productId}-fav-status`) === 'checked';
     const btn = document.getElementById('favBtn');
     
@@ -489,7 +502,7 @@ function sendCartToBackend(cartToSend) {
         // console.log("inside sendcart",item);
         cartItems.push({
             cartKey: cartKey,
-            id: item.id,
+            id: item._id,
             name: item.name,
             image: item.image,
             brandName: item.brandName,

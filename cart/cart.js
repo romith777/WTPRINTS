@@ -4,6 +4,7 @@ let logintoken = localStorage.getItem('login-token');
 let username;
 let cartCount = parseInt(localStorage.getItem('cartCount')) || 0;
 let cart = JSON.parse(localStorage.getItem('cart')) || {};
+// console.log(cart);
 
 function formatCurrency(priceCents){
     return (priceCents/100).toFixed(2);
@@ -92,11 +93,13 @@ function renderProducts(cartObj){
         const quantity = product.quantity || 1;
         const size = product.selectedSize || 'M';
         
+        console.log('product',product);
+        
         innerHtml += `
             <div class="browse-card js-card-${cartKey}">
-                <a href="../product_pages/productSinglePage.html?id=${product.id}" style="cursor: pointer;">
+                <a href="../product_pages/productSinglePage.html?id=${product._id}" style="cursor: pointer;">
                     <div class="browse-card-img">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${product.image[0]}" alt="${product.name}">
                     </div>
                 </a>
                 <div class="browse-card-information">
@@ -214,7 +217,7 @@ function sendCartToBackend() {
         
         cartItems.push({
             cartKey: cartKey,
-            id: item.id,
+            _id: item._id,
             name: item.name,
             image: item.image,
             brandName: item.brandName,
@@ -283,18 +286,17 @@ async function initializeCart() {
     
     if (username) {
         const backendItems = await fetchCartFromBackend();
-        // console.log('Fetched backend cart items:', backendItems);
+        console.log('Fetched backend cart items:', backendItems);
         
         cart = {};
         
         if (backendItems && backendItems.length > 0) {
             backendItems.forEach(item => {
                 const cartKey = item.cartKey;
-                const size = item.selectedSize;
-                // console.log(cartKey, size);
-                if (cartKey && size && item.id) {
+                const size = item.selectedSize || 'M';
+                if (cartKey && size && item._id) {
                     cart[cartKey] = {
-                        id: item.id,
+                        _id: item._id,
                         name: item.name,
                         image: item.image,
                         brandName: item.brandName,

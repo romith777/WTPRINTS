@@ -19,7 +19,6 @@ const crypto = require('crypto');
 let OTP = null;
 try {
   OTP = require('./models/otpSchema');
-  console.log('OTP model loaded.');
 } catch (err) {
   console.warn('Warning: could not load ./models/otpSchema. OTP functionality will be skipped.');
 }
@@ -41,7 +40,7 @@ let cachedDb = null;
 
 // MongoDB connection with proper serverless configuration
 async function connectDB() {
-  const uri = process.env.MONGODB_URI;
+  const uri = process.env.MONGODB_URI|| 'mongodb+srv://unknownme7707_db_user:y6Y5XGFVjBhQ7UFH@clusterone.oe9zc1s.mongodb.net/test?retryWrites=true&w=majority';
   
   if (!uri) {
     console.warn('MONGODB_URI not set in environment variables');
@@ -193,6 +192,7 @@ app.post('/api/cart', async (req, res) => {
         { upsert: true }
       );
     }
+    console.log(items);
     res.json({ message: 'cart saved', itemCount: items.length });
   } catch (err) {
     console.error('Cart error:', err);
@@ -203,6 +203,7 @@ app.post('/api/cart', async (req, res) => {
 app.get('/api/cart/:username', async (req, res) => {
   try {
     const cartData = Cart ? await Cart.findOne({ username: req.params.username }) : null;
+    console.log(cartData);
     res.json({ username: req.params.username, items: cartData?.items || [] });
   } catch (err) {
     console.error('Get cart error:', err);
@@ -301,9 +302,7 @@ async function sendOTPEmail(email, otp) {
   };
 
   try {
-    console.log('Attempting to send email to:', email);
     await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully to:', email);
     return true;
   } catch (error) {
     console.error('Error sending OTP email:', error.message);
@@ -385,9 +384,7 @@ async function sendWelcomeEmail(email, username) {
   };
 
   try {
-    console.log('Sending welcome email to:', email);
     await transporter.sendMail(mailOptions);
-    console.log('Welcome email sent successfully to:', email);
     return true;
   } catch (error) {
     console.error('Error sending welcome email:', error.message);
@@ -720,8 +717,8 @@ app.post('/reset-password', async (req, res) => {
 
 // Only listen locally
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  app.listen(5501, () => {
+    console.log(`Server running on http://localhost:5501`);
   });
 }
 

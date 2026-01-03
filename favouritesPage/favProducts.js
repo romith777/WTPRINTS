@@ -49,22 +49,22 @@ function renderProducts(products){
     products.forEach(element => {
         element.forEach(product => {
             innerHtml += `
-                <div class="browse-card js-card-${product.id}">
+                <div class="browse-card js-card-${product._id}">
                     <div class="browse-card-img">
-                        <a href="../product_pages/productSinglePage.html?id=${product.id}" style="cursor: pointer;">
-                            <img src="${product.image}" alt="${product.name}">
+                        <a href="../product_pages/productSinglePage.html?id=${product._id}" style="cursor: pointer;">
+                            <img src="${product.image[0]}" alt="${product.name}">
                         </a>
                     </div>
                     <div class="browse-card-information">
                         <div class="browse-card-information-area">
                             <div class="browse-card-information-area-text">
                                 <p class="browse-card-information-text">${product.brandName}</p>
-                                <p class="browse-card-information-text">${product.about}</p>
+                                <p class="browse-card-information-text">${product.name}</p>
                                 <p class="browse-card-information-text">Price: $<span class="browse-card-information-price">${formatCurrency(product.priceCents)}</span></p>
                             </div>
                         </div>
-                        <button class="add-to-cart-button js-fav-remove" data-product-id="${product.id}">Remove from Favorites</button>
-                        <button class="add-to-cart-button js-add-to-cart" data-product-id="${product.id}">Add To Cart</button>
+                        <button class="add-to-cart-button js-fav-remove" data-product-id="${product._id}">Remove from Favorites</button>
+                        <button class="add-to-cart-button js-add-to-cart" data-product-id="${product._id}">Add To Cart</button>
                     </div>
                 </div>
             `;
@@ -112,6 +112,49 @@ function attachRemoveListeners() {
     });
 }
 
+function sendCartToBackend(cartToSend) {
+    const username = getUsername();
+    
+    if (!username) {
+        return false;
+    }
+    
+    const cartItems = [];
+    // console.log("cartToSend",cartToSend);
+    Object.keys(cartToSend).forEach(cartKey => {
+        const item = cartToSend[cartKey];
+        // console.log('Cart item to send:', cartKey);
+        // console.log("inside sendcart",item);
+        cartItems.push({
+            cartKey: cartKey,
+            _id: item._id,
+            name: item.name,
+            image: item.image,
+            brandName: item.brandName,
+            about: item.about,
+            priceCents: item.priceCents,
+            keyword: item.keyword,
+            quantity: item.quantity || 1,
+            selectedSize: item.selectedSize
+        });
+    });
+    console.log("cartItems",cartItems);
+    const payload = { username, items: cartItems };
+    // console.log("payload",payload);
+    fetch(`${API_URI}/api/cart`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .catch(error => {
+        console.error('Error syncing cart:', error);
+    });
+    
+    return true;
+}
+
 function attachCartListeners() {
     document.querySelectorAll('.js-add-to-cart').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -123,7 +166,7 @@ function attachCartListeners() {
             let product = null;
             Object.values(favList).forEach(items => {
                 items.forEach(item => {
-                    if (item.id === productId) {
+                    if (item._id === productId) {
                         product = item;
                     }
                 });
@@ -139,14 +182,15 @@ function attachCartListeners() {
                 
                 localStorage.setItem('cart', JSON.stringify(cart));
                 
+                sendCartToBackend(cart);
+
                 // Update cart count
                 let cartCount = parseInt(localStorage.getItem('cartCount') || 0);
                 cartCount++;
                 localStorage.setItem('cartCount', cartCount);
                 
                 // Visual feedback
-                button.innerHTML = "Added ✓";
-                button.style.backgroundColor = "#4CAF50";
+                button.innerHTML = "Added";
                 setTimeout(() => {
                     button.innerHTML = "Add To Cart";
                     button.style.backgroundColor = "";
@@ -183,7 +227,7 @@ async function sendFavoritesToBackend() {
     Object.values(favList).forEach(items => {
         items.forEach(item => {
             favItems.push({
-                id: item.id,
+                _id: item._id,
                 name: item.name,
                 image: item.image,
                 brandName: item.brandName,
@@ -256,9 +300,9 @@ function mergeFavoritesData(backendItems) {
     
     // Add backend items
     backendItems.forEach(item => {
-        if (item.id && !favList[item.id]) {
-            favList[item.id] = [item];
-            localStorage.setItem(`${item.id}-fav-status`, 'checked');
+        if (item._id && !favList[item._id]) {
+            favList[item._id] = [item];
+            localStorage.setItem(`${item._id}-fav-status`, 'checked');
         }
     });
 
@@ -321,12 +365,12 @@ if(urlParams.get('login') === 'success'){
         email: urlParams.get('email')
     }));
     // console.log(JSON.parse(localStorage.getItem('wt_user')));
-    document.querySelector(".login-token").href = "./user/user.html";
+    document.querySelector(".login-token").href = "../user/user.html";
     document.querySelector(".login-token-info").innerHTML = "My Account";
 }
 
 if(localStorage.getItem('login-token') === 'true'){
-    document.querySelector(".login-token").href = "./user/user.html";
+    document.querySelector(".login-token").href = "../user/user.html";
     document.querySelector(".login-token-info").innerHTML = "My Account";
 }
 else{
