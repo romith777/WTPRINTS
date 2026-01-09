@@ -40,7 +40,7 @@ let cachedDb = null;
 
 // MongoDB connection with proper serverless configuration
 async function connectDB() {
-  const uri = process.env.MONGODB_URI|| 'mongodb+srv://unknownme7707_db_user:y6Y5XGFVjBhQ7UFH@clusterone.oe9zc1s.mongodb.net/test?retryWrites=true&w=majority';
+  const uri = process.env.MONGODB_URI;
   
   if (!uri) {
     console.warn('MONGODB_URI not set in environment variables');
