@@ -265,7 +265,7 @@ async function fetchFavoritesFromBackend() {
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
+        }); 
 
         if (!response.ok) {
             console.error('Failed to fetch favorites:', response.status);
