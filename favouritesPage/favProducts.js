@@ -283,7 +283,7 @@ async function fetchFavoritesFromBackend() {
 
 function mergeFavoritesData(backendItems) {
     
-    const localFavList = JSON.parse(localStorage.getItem('favList')) || {};
+    // const localFavList = JSON.parse(localStorage.getItem('favList')) || {};
     
     if (!backendItems || backendItems.length === 0) {
         console.log('No backend favorites data, using local');
@@ -293,7 +293,7 @@ function mergeFavoritesData(backendItems) {
     }
 
     // Start with local favorites
-    favList = { ...localFavList };
+    // favList = { ...localFavList };
     
     // Add backend items
     console.log('backend',backendItems);
