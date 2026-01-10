@@ -357,7 +357,7 @@ function initializeApp() {
                 else if(isChecked == 'checked'){
                     element.dataset.isChecked = "unchecked";
                     localStorage.setItem(`${productId}-fav-status`,'unchecked');
-                    favCount--;
+                    favCount--; 
                     localStorage.setItem('favCount',favCount);
                     updateFavCartCount();
                     element.src="../assets/favourites-icon-unclick.png";
