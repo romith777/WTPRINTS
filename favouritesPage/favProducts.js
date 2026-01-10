@@ -1,7 +1,6 @@
 const API_URI = window.location.origin;
 
 let favList = JSON.parse(localStorage.getItem('favList')) || {};
-console.log(favList);
 let cart = JSON.parse(localStorage.getItem('cart')) || {};
 
 function formatCurrency(priceCents){
@@ -223,19 +222,22 @@ async function sendFavoritesToBackend() {
     }
     
     const favItems = [];
-    Object.values(favList).forEach(item => {
-            favItems.push({
-                _id: item._id,
-                name: item.name,
-                image: item.image,
-                brandName: item.brandName,
-                about: item.about,
-                priceCents: item.priceCents,
-                keyword: item.keyword
-            });
-    });
+    console.log(favList);
+    for(let i in favList){
+        item = favList[i];
+        console.log(item);
+        favItems.push({
+            _id: item._id,
+            name: item.name,
+            image: item.image,
+            brandName: item.brandName,
+            about: item.about,
+            priceCents: item.priceCents,
+            keyword: item.keyword
+        });
+    };
     
-    // console.log("Sending favorites to backend:", { username, itemCount: favItems.length });
+    console.log("Sending favorites to backend:", { username, itemCount: favItems });
 
     const payload = { username, items: favItems };
     const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
@@ -280,13 +282,11 @@ async function fetchFavoritesFromBackend() {
 }
 
 function mergeFavoritesData(backendItems) {
-    // console.log('Merging favorites data. Backend items:', backendItems);
     
     const localFavList = JSON.parse(localStorage.getItem('favList')) || {};
-    // console.log('Local favorites before merge:', localFavList);
     
     if (!backendItems || backendItems.length === 0) {
-        // console.log('No backend favorites data, using local');
+        console.log('No backend favorites data, using local');
         favList = localFavList;
         renderProducts(Object.values(favList));
         return;
@@ -296,14 +296,16 @@ function mergeFavoritesData(backendItems) {
     favList = { ...localFavList };
     
     // Add backend items
+    console.log('backend',backendItems);
     backendItems.forEach(item => {
+        console.log(item);
         if (item._id && !favList[item._id]) {
-            favList[item._id] = [item];
+            favList[item._id] = item;
             localStorage.setItem(`${item._id}-fav-status`, 'checked');
         }
     });
 
-    // console.log('Favorites after merge:', favList);
+    console.log('Favorites after merge:', favList);
 
     // Save merged favorites
     localStorage.setItem('favList', JSON.stringify(favList));
@@ -335,6 +337,7 @@ async function initializeFavorites() {
         // console.log("Fetching favorites from backend...");
         
         const backendItems = await fetchFavoritesFromBackend();
+        console.log(backendItems);
         mergeFavoritesData(backendItems);
     } else {
         // console.log("No user logged in");
