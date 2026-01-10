@@ -343,7 +343,14 @@ function initializeApp() {
                     element.dataset.isChecked = "checked";
                     updateFavCartCount();
                     element.src="../assets/favourites-icon.png";
-                    const result = type.filter(item => item.id === productId);
+                    let result;
+                    console.log(productId);
+                    for(let i in type){
+                        if(type[i]._id == productId){
+                            result = type[i];
+                            break;
+                        }
+                    }
                     favList[productId] = result;
                     saveFavList();
                 }

@@ -1,6 +1,7 @@
 const API_URI = window.location.origin;
 
 let favList = JSON.parse(localStorage.getItem('favList')) || {};
+console.log(favList);
 let cart = JSON.parse(localStorage.getItem('cart')) || {};
 
 function formatCurrency(priceCents){
@@ -25,6 +26,7 @@ function getUsername() {
 }
 
 function renderProducts(products){
+    console.log(products);
     let innerHtml = "";
     
     if(!products || products.length === 0){
@@ -46,8 +48,7 @@ function renderProducts(products){
     // Add title
     innerHtml += `<h1 class="fav-page-title">My Favorites</h1>`;
 
-    products.forEach(element => {
-        element.forEach(product => {
+    products.forEach(product => {
             innerHtml += `
                 <div class="browse-card js-card-${product._id}">
                     <div class="browse-card-img">
@@ -69,7 +70,6 @@ function renderProducts(products){
                 </div>
             `;
         });
-    });
 
     document.querySelector(".js-favourites-body").innerHTML = innerHtml;
     
