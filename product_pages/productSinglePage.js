@@ -410,7 +410,7 @@ window.toggleFavorite = function() {
         btn.innerHTML = '<span>♡</span> Favorite';
     } else {
         localStorage.setItem(`${productId}-fav-status`, 'checked');
-        favList[productId] = [currentProduct];
+        favList[productId] = currentProduct;
         
         let favCount = parseInt(localStorage.getItem('favCount') || 0);
         favCount++;

@@ -26,7 +26,6 @@ function getUsername() {
 }
 
 function renderProducts(products){
-    console.log(products);
     let innerHtml = "";
     
     if(!products || products.length === 0){
@@ -47,7 +46,7 @@ function renderProducts(products){
 
     // Add title
     innerHtml += `<h1 class="fav-page-title">My Favorites</h1>`;
-
+    
     products.forEach(product => {
             innerHtml += `
                 <div class="browse-card js-card-${product._id}">
