@@ -223,8 +223,7 @@ async function sendFavoritesToBackend() {
     }
     
     const favItems = [];
-    Object.values(favList).forEach(items => {
-        items.forEach(item => {
+    Object.values(favList).forEach(item => {
             favItems.push({
                 _id: item._id,
                 name: item.name,
@@ -234,7 +233,6 @@ async function sendFavoritesToBackend() {
                 priceCents: item.priceCents,
                 keyword: item.keyword
             });
-        });
     });
     
     // console.log("Sending favorites to backend:", { username, itemCount: favItems.length });
