@@ -27,7 +27,7 @@ function getUsername() {
 function renderProducts(products){
     let innerHtml = "";
     
-    if(!products || products.length === 0){
+    if(!products || products.length === 0 || products == {}){
         // console.log("No products found");
         innerHtml = `
             <div class="no-fav-container">
