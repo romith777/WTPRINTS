@@ -286,9 +286,8 @@ function mergeFavoritesData(backendItems) {
     // const localFavList = JSON.parse(localStorage.getItem('favList')) || {};
     
     if (!backendItems || backendItems.length === 0) {
-        console.log('No backend favorites data, using local');
-        favList = localFavList;
-        renderProducts(Object.values(favList));
+        // console.log('No backend favorites data, using local');
+        renderProducts({});
         return;
     }
 
