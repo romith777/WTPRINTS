@@ -287,7 +287,7 @@ function mergeFavoritesData(backendItems) {
     
     if (!backendItems || backendItems.length === 0) {
         // console.log('No backend favorites data, using local');
-        renderProducts({});
+        renderProducts(false);
         return;
     }
 
@@ -335,7 +335,7 @@ async function initializeFavorites() {
         mergeFavoritesData(backendItems);
     } else {
         // console.log("No user logged in");
-        favList = JSON.parse(localStorage.getItem('favList')) || {};
+        // favList = JSON.parse(localStorage.getItem('favList')) || {};
         renderProducts(Object.values(favList));
     }
     
