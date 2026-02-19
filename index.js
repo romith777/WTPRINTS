@@ -133,14 +133,22 @@ function updateLoginSection() {
         loginButton.innerHTML = '<span class="login-token-info">LOGOUT</span>';
         loginButton.style.backgroundColor = '#ee0652';
         loginButton.style.color = 'white';
+
+        loginButton.parentElement.removeAttribute('href');
         
         // Add logout functionality
-        loginButton.parentElement.onclick = function(e) {
+        loginButton.parentElement.onmouseenter = function(e) {
             e.preventDefault();
-            localStorage.setItem('login-token', 'false');
-            localStorage.removeItem('wt_user');
-            window.location.href = 'index.html';
+            loginButton.style.backgroundColor = '#f0f0f0';
+            loginButton.innerHTML='<span class="login-token-info">WHY LOGOUT ? JUST LOOK INTO THE NEW ARRIVALS</span>';
+            loginButton.style.color = '#000000';
         };
+        loginButton.parentElement.onmouseleave = function(e){
+            e.preventDefault();
+            loginButton.innerHTML='<span class="login-token-info">LOGOUT</span>';
+            loginButton.style.backgroundColor = '#ee0652';
+            loginButton.style.color = '#f0f0f0';
+        }
     } else {
         // User is not logged in (default state)
         loginSectionTitle.textContent = 'LOGIN TO SEE YOUR DESIGNS';

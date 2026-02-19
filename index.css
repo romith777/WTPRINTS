@@ -520,7 +520,7 @@ section h1{
 
 .login-to-access-button:hover{
     background-color: #f0f0f0;
-    transform: translateY(-3px);
+    /* transform: translateY(-3px); */
     box-shadow: 0 6px 25px rgba(255, 255, 255, 0.5);
 }
 

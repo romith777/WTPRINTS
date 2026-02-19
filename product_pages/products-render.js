@@ -5,7 +5,6 @@
 let type = JSON.parse(localStorage.getItem('product_type'));
 let favList = JSON.parse(localStorage.getItem("favList")) || {};
 let cart = JSON.parse(localStorage.getItem('cart')) || {};
-console.log(tees);
 
 // Normalize cart data structure
 Object.keys(cart).forEach(productId => {
@@ -26,13 +25,17 @@ let otherProducts = [];
 // Function to initialize products after they're loaded
 function initializeProducts() {
     allProductTypes = [tees, cargos, hoodies];
-    
+    // console.log(allProductTypes);
     // Filter to get products from other categories
     allProductTypes.forEach(productType => {
         if (productType && productType.length > 0 && type && type.length > 0) {
             if (productType[0].name !== type[0].name) {
                 otherProducts = [...otherProducts, ...productType];
             }
+        }
+        else if(productType && productType.length > 0){
+            // console.log('yes');
+            otherProducts = [...otherProducts, ...productType];
         }
     });
 }
@@ -50,9 +53,12 @@ function shuffleArray(array) {
 
 // Wait for products to load before initializing
 function startApp() {
-    if (!type || type.length === 0) {
+    if (!type) {
         console.error('No product type selected');
         return;
+    }
+    else if(type.length === 0){
+        console.error('No product type Available');
     }
 
     // Check if products are loaded
@@ -170,7 +176,6 @@ function initializeApp() {
             console.log('No related products available');
             return;
         }
-        
         const shuffled = shuffleArray([...otherProducts]).slice(0, 8);
         let relatedHTML = '';
         
@@ -396,7 +401,7 @@ function initializeApp() {
             // console.log("inside sendcart",item);
             cartItems.push({
                 cartKey: cartKey,
-                id: item.id,
+                _id: item._id,
                 name: item.name,
                 image: item.image,
                 brandName: item.brandName,
@@ -559,4 +564,4 @@ function initializeApp() {
 // Start the app when DOM is ready
 document.addEventListener('DOMContentLoaded', startApp);
 
-console.log(JSON.parse(localStorage.getItem('cart')));
+// console.log(JSON.parse(localStorage.getItem('cart')));

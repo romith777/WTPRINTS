@@ -192,7 +192,7 @@ app.post('/api/cart', async (req, res) => {
         { upsert: true }
       );
     }
-    console.log(items);
+    // console.log(items);
     res.json({ message: 'cart saved', itemCount: items.length });
   } catch (err) {
     console.error('Cart error:', err);
@@ -203,7 +203,7 @@ app.post('/api/cart', async (req, res) => {
 app.get('/api/cart/:username', async (req, res) => {
   try {
     const cartData = Cart ? await Cart.findOne({ username: req.params.username }) : null;
-    console.log(cartData);
+    // console.log(cartData);
     res.json({ username: req.params.username, items: cartData?.items || [] });
   } catch (err) {
     console.error('Get cart error:', err);

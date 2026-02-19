@@ -328,8 +328,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Your cart is empty!');
                 return;
             }
-            
-            alert('Proceeding to checkout...');
+            if(localStorage.getItem('login-token') != 'true')
+                window.location.href = '../login.html?login=nouser';
+            else
+                window.location.href = '../payment/payment.html';
         });
     }
     

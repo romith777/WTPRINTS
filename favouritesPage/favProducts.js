@@ -307,7 +307,7 @@ function mergeFavoritesData(backendItems) {
     console.log('Favorites after merge:', favList);
 
     // Save merged favorites
-    // localStorage.setItem('favList', JSON.stringify(favList));
+    localStorage.setItem('favList', JSON.stringify(favList));
     
     // Update count
     let favCount = 0;
@@ -335,8 +335,9 @@ async function initializeFavorites() {
         mergeFavoritesData(backendItems);
     } else {
         // console.log("No user logged in");
-        // favList = JSON.parse(localStorage.getItem('favList')) || {};
-        renderProducts(Object.values(favList));
+        console.log(JSON.parse(localStorage.getItem('favList')));
+        List = JSON.parse(localStorage.getItem('favList')) || {};
+        renderProducts(Object.values(List));
     }
     
     updateCounts();

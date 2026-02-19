@@ -390,6 +390,41 @@ window.addToCart = function() {
     }, 1500);
 }
 
+// Backend functions
+async function sendFavoritesToBackend() {
+    const username = getUsername();
+    
+    if (!username) {
+        // console.log("No user logged in, skipping favorites save");
+        return false;
+    }
+    
+    const favItems = [];
+    console.log(favList);
+    for(let i in favList){
+        item = favList[i];
+        console.log(item);
+        favItems.push({
+            _id: item._id,
+            name: item.name,
+            image: item.image,
+            brandName: item.brandName,
+            about: item.about,
+            priceCents: item.priceCents,
+            keyword: item.keyword
+        });
+    };
+    
+    // console.log("Sending favorites to backend:", { username, itemCount: favItems });
+
+    const payload = { username, items: favItems };
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    const url = `${API_URI}/api/favorites`;
+
+    const ok = navigator.sendBeacon(url, blob);
+    // console.log('sendBeacon returned', ok);
+    return ok;
+}
 
 window.toggleFavorite = function() {
     if (!currentProduct) return;
@@ -502,7 +537,7 @@ function sendCartToBackend(cartToSend) {
         // console.log("inside sendcart",item);
         cartItems.push({
             cartKey: cartKey,
-            id: item._id,
+            _id: item._id,
             name: item.name,
             image: item.image,
             brandName: item.brandName,
