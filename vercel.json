@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "backend/server.js", "use": "@vercel/node" },
+    { "src": "**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/health", "dest": "backend/server.js" },
+    { "src": "/products", "dest": "backend/server.js" },
+    { "src": "/signup", "dest": "backend/server.js" },
+    { "src": "/login", "dest": "backend/server.js" },
+    { "src": "/request-otp", "dest": "backend/server.js" },
+    { "src": "/verify-otp", "dest": "backend/server.js" },
+    { "src": "/change-password", "dest": "backend/server.js" },
+    { "src": "/request-password-reset", "dest": "backend/server.js" },
+    { "src": "/reset-password", "dest": "backend/server.js" },
+    { "src": "/api/cart(.*)", "dest": "backend/server.js" },
+    { "src": "/api/favorites(.*)", "dest": "backend/server.js" },
+    { "src": "/(.*)", "dest": "$1" }
+  ]
+}
