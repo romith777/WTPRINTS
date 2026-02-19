@@ -127,6 +127,7 @@ function showMessage(elementId, message, type) {
 // Logout
 document.getElementById('logoutBtn').addEventListener('click', ()=>{
   if(confirm('Are you sure you want to logout?')) {
+    
     localStorage.removeItem('wt_user');
     localStorage.setItem('login-token', 'false');
     localStorage.removeItem('username');
