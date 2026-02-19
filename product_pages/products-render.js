@@ -3,6 +3,7 @@
 // let API_URI = window.location.origin;
 
 let type = JSON.parse(localStorage.getItem('product_type'));
+console.log(type);
 let favList = JSON.parse(localStorage.getItem("favList")) || {};
 let cart = JSON.parse(localStorage.getItem('cart')) || {};
 
@@ -332,6 +333,7 @@ function initializeApp() {
     // Wishlist functionality
     function saveFavList(){
         localStorage.setItem("favList", JSON.stringify(favList));
+        sendFavoritesToBackend();
     }
 
     function attachWishlistButtons() {
@@ -386,6 +388,41 @@ function initializeApp() {
         }
     }
 
+    async function sendFavoritesToBackend() {
+        const username = getUsername();
+        
+        if (!username) {
+            // console.log("No user logged in, skipping favorites save");
+            return false;
+        }
+        
+        const favItems = [];
+        console.log(favList);
+        for(let i in favList){
+            item = favList[i];
+            console.log(item);
+            favItems.push({
+                _id: item._id,
+                name: item.name,
+                image: item.image,
+                brandName: item.brandName,
+                about: item.about,
+                priceCents: item.priceCents,
+                keyword: item.keyword
+            });
+        };
+        
+        // console.log("Sending favorites to backend:", { username, itemCount: favItems });
+
+        const payload = { username, items: favItems };
+        const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+        const url = `${API_URI}/api/favorites`;
+
+        const ok = navigator.sendBeacon(url, blob);
+        // console.log('sendBeacon returned', ok);
+        return ok;
+    }
+
     function sendCartToBackend(cartToSend) {
         const username = getUsername();
         
@@ -428,7 +465,7 @@ function initializeApp() {
         
         return true;
     }
-
+    
     // Cart functionality
     function saveCart(){
         localStorage.setItem("cart", JSON.stringify(cart));
