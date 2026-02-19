@@ -101,6 +101,7 @@ function attachRemoveListeners() {
             let favCount = parseInt(localStorage.getItem('favCount') || 0);
             favCount--;
             localStorage.setItem('favCount', favCount);
+            localStorage.setItem('favList',favList);
             
             saveFavList();
             

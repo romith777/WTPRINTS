@@ -369,6 +369,7 @@ function initializeApp() {
                     updateFavCartCount();
                     element.src="../assets/favourites-icon-unclick.png";
                     if(favList[productId]){
+                        console.log(favList);
                         delete favList[productId];
                         saveFavList();
                     }
@@ -465,7 +466,7 @@ function initializeApp() {
         
         return true;
     }
-    
+
     // Cart functionality
     function saveCart(){
         localStorage.setItem("cart", JSON.stringify(cart));
