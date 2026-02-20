@@ -789,10 +789,6 @@ app.get('/payment-success',(req,res)=>{
   res.sendFile(path.join(__dirname, 'views/success.html'))
 });
 
-// Only listen locally
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:5501`);
-  });
-}
-module.exports = app;
+module.exports = (req, res) => {
+  return app(req, res);
+};
