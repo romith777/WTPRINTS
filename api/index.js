@@ -793,6 +793,4 @@ app.get('/payment-success',(req,res)=>{
   res.sendFile(path.join(__dirname, 'views/success.html'))
 });
 
-module.exports = (req, res) => {
-  return app(req, res);
-};
+module.exports = app;
