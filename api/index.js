@@ -98,7 +98,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from parent directory (root folder)
-app.use(express.static(path.join(__dirname, '..')));
+// app.use(express.static(path.join(__dirname, '..')));
 
 // ✅ ADDED: Middleware to ensure DB connection before each request
 app.use(async (req, res, next) => {
