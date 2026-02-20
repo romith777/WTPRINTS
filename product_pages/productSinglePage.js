@@ -74,7 +74,7 @@ function renderProductDetail(product) {
             <div class="product-info-section">
                 <p class="product-brand">${product.brandName}</p>
                 <h1 class="product-name">${product.name}</h1>
-                <div class="product-price">$${formatCurrency(product.priceCents)}</div>
+                <div class="product-price">₹${formatCurrency(product.priceCents)}</div>
                 
                 <p class="product-description">
                     ${product.about || 'High-quality product made with premium materials. Perfect for everyday wear and designed for maximum comfort and style.'}
@@ -163,7 +163,7 @@ function renderRelatedProducts(currentProduct) {
                         <div class="related-product-info">
                             <h4>${product.brandName}</h4>
                             <p>${product.about}</p>
-                            <p class="related-product-price">$${formatCurrency(product.priceCents)}</p>
+                            <p class="related-product-price">₹${formatCurrency(product.priceCents)}</p>
                         </div>
                     </div>
                 `).join('')}

@@ -50,8 +50,8 @@ function updateCartCount() {
 function updateCheckoutSummary() {
     const itemCount = calculateTotalQuantity(cart);
     const subtotal = calculateTotalPrice(cart);
-    const shipping = itemCount > 0 ? 500 : 0;
-    const tax = Math.round(subtotal * 0.1);
+    const shipping = itemCount > 0 ? 5000 : 0;
+    const tax = Math.round(subtotal * 0.05);
     const total = subtotal + shipping + tax;
     
     const itemCountEl = document.getElementById('itemCount');
@@ -108,7 +108,7 @@ function renderProducts(cartObj){
                             <p class="browse-card-brand">${product.brandName}</p>
                             <p class="browse-card-about">${product.about}</p>
                             <p class="browse-card-size">Size: <strong>${size}</strong></p>
-                            <p class="browse-card-price">$${formatCurrency(product.priceCents)}</p>
+                            <p class="browse-card-price">₹${formatCurrency(product.priceCents)}</p>
                         </div>
                     </div>
                     <div class="browse-card-actions">
@@ -330,8 +330,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if(localStorage.getItem('login-token') != 'true')
                 window.location.href = '../login.html?login=nouser';
-            else
-                window.location.href = '../payment/payment.html';
+            else{
+                window.location.href = '/payment';
+                console.log("hi");
+            }
         });
     }
     

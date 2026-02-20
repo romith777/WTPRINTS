@@ -722,4 +722,76 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+// payment gateway
+const {validateWebhookSignature} = require('razorpay/dist/utils/razorpay-utils');
+const Razorpay = require('razorpay');
+
+app.set('view engine','ejs');
+app.use(express.json());
+app.use(express.static("public"));
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_SECRET_KEY
+});
+
+app.get('/payment', (req,res)=>{
+  // console.log("key:",process.env.RAZORPAY_KEY_ID);
+  res.render("payment.ejs",{ key: process.env.RAZORPAY_KEY_ID });
+});
+
+app.post('/api/create-order',async(req,res)=>{
+  const {username} = req.body;
+  try{
+    let amount = 0;
+    const cartData = Cart ? await Cart.findOne({ username: username }) : null;
+
+    for(let i in cartData.items){
+      // console.log(cartData.items[i].priceCents * cartData.items[i].quantity);
+      amount = amount + (cartData.items[i].priceCents * cartData.items[i].quantity);
+    }
+
+    amount = amount + ((amount*5)/100);
+    amount = amount + 5000;
+    const options={
+      amount: amount,
+      currency: "INR",
+      // reciept: "reciept_" + Date.now()
+    }
+
+    const order = await razorpay.orders.create(options);
+    console.log(order);
+    res.json(order);
+  }
+  catch(err){
+    console.error(err);
+    res.status(500).send({error:err.message});
+  }
+});
+
+app.post('/api/verify-payment',(req,res)=>{
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+  const secret = process.env.RAZORPAY_SECRET_KEY;
+  try{
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+    const isValidSignature = validateWebhookSignature(body, razorpay_signature,secret);
+    if(isValidSignature){
+      res.status(200).json({status: "ok"});
+      console.log("success");
+    }
+    else{
+      res.status(400).json({status: "fail"});
+      console.log("failed");
+    }
+  }
+  catch(err){
+    console.error(err);
+    res.status(500).send({error:err.message});
+  }
+});
+
+app.get('/payment-success',(req,res)=>{
+  res.sendFile(path.join(__dirname, 'views/success.html'))
+});
+
 module.exports = app;

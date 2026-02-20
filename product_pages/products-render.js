@@ -139,7 +139,7 @@ function initializeApp() {
                             <div class="browse-card-information-area-text">
                                 <p class="browse-card-information-text">${product.brandName}</p>
                                 <p class="browse-card-information-text">${product.about}</p>
-                                <p class="browse-card-information-text">Price: $<span class="browse-card-information-price">${formatCurrency(product.priceCents)}</span></p>
+                                <p class="browse-card-information-text">Price: ₹<span class="browse-card-information-price">${formatCurrency(product.priceCents)}</span></p>
                             </div>
                             <div class="browse-card-information-area-wishlist">
                                 <img src="../assets/favourites-icon-unclick.png" class="browse-card-wishlist" data-product-id="${product._id}" data-is-checked="${localStorage.getItem(`${product._id}-fav-status`)||"unchecked"}" >
@@ -189,7 +189,7 @@ function initializeApp() {
                     <div class="related-product-info">
                         <h4>${product.brandName}</h4>
                         <p>${product.name}</p>
-                        <p class="related-product-price">$${formatCurrency(product.priceCents)}</p>
+                        <p class="related-product-price">₹${formatCurrency(product.priceCents)}</p>
                     </div>
                 </div>
             `;
