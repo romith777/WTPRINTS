@@ -721,6 +721,7 @@ const {validateWebhookSignature} = require('razorpay/dist/utils/razorpay-utils')
 const Razorpay = require('razorpay');
 
 app.set('view engine','ejs');
+app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
 app.use(express.static("public"));
 
