@@ -16,6 +16,11 @@
     { "src": "/reset-password", "dest": "backend/server.js" },
     { "src": "/api/cart(.*)", "dest": "backend/server.js" },
     { "src": "/api/favorites(.*)", "dest": "backend/server.js" },
+    { "src": "/payment-success", "dest": "backend/server.js" },
+    { "src": "/api/verify-payment", "dest": "backend/server.js" },
+    { "src": "/api/create-order", "dest": "backend/server.js" },
+    { "src": "/payment", "dest": "backend/server.js" },
+
     { "src": "/(.*)", "dest": "$1" }
   ]
 }

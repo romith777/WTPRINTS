@@ -760,7 +760,7 @@ app.post('/api/create-order',async(req,res)=>{
     }
 
     const order = await razorpay.orders.create(options);
-    console.log(order);
+    // console.log(order);
     res.json(order);
   }
   catch(err){
