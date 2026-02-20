@@ -715,14 +715,20 @@ app.post('/reset-password', async (req, res) => {
   }
 });
 
+// Only listen locally
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(5501, () => {
+    console.log(`Server running on http://localhost:5501`);
+  });
+}
+
 // payment gateway
 const {validateWebhookSignature} = require('razorpay/dist/utils/razorpay-utils');
 const Razorpay = require('razorpay');
 
 app.set('view engine','ejs');
-app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static("public"));
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -739,12 +745,12 @@ app.post('/api/create-order',async(req,res)=>{
   try{
     let amount = 0;
     const cartData = Cart ? await Cart.findOne({ username: username }) : null;
-    
+
     for(let i in cartData.items){
       // console.log(cartData.items[i].priceCents * cartData.items[i].quantity);
       amount = amount + (cartData.items[i].priceCents * cartData.items[i].quantity);
     }
-    
+
     amount = amount + ((amount*5)/100);
     amount = amount + 5000;
     const options={
@@ -752,9 +758,9 @@ app.post('/api/create-order',async(req,res)=>{
       currency: "INR",
       // reciept: "reciept_" + Date.now()
     }
-    
+
     const order = await razorpay.orders.create(options);
-    // console.log(order);
+    console.log(order);
     res.json(order);
   }
   catch(err){
@@ -787,13 +793,5 @@ app.post('/api/verify-payment',(req,res)=>{
 app.get('/payment-success',(req,res)=>{
   res.sendFile(path.join(__dirname, 'views/success.html'))
 });
-
-
-// Only listen locally
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(5501, () => {
-    console.log(`Server running on http://localhost:5501`);
-  });
-}
 
 module.exports = app;

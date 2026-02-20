@@ -1,25 +1,5 @@
 {
   "dependencies": {
     "nodemailer": "^7.0.10"
-  },
-  "name": "wtf",
-  "version": "1.0.0",
-  "description": "**WTPRINTS** is a full-stack e-commerce platform built using **HTML, CSS, JavaScript (Frontend)** and **Node.js with Express & MongoDB (Backend)**.  \r It enables users to browse products, manage their cart, and log in securely — forming a scalable foundation for a branded clothing store.",
-  "main": "index.js",
-  "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/romith777/WTF.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/romith777/WTF/issues"
-  },
-  "homepage": "https://github.com/romith777/WTF#readme"
+  }
 }

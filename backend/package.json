@@ -3,6 +3,7 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "ejs": "^4.0.1",
     "express": "^5.1.0",
     "mongoose": "^8.19.1",
     "nodemon": "^3.1.10",
@@ -20,6 +21,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {}
+  "type": "commonjs"
 }
