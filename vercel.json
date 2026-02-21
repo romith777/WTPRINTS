@@ -20,6 +20,8 @@
     { "src": "/api/verify-payment", "dest": "backend/server.js" },
     { "src": "/api/create-order", "dest": "backend/server.js" },
     { "src": "/payment", "dest": "backend/server.js" },
+    { "src": "/payment.css", "dest": "backend/server.js" },
+    { "src": "/payment.js", "dest": "backend/server.js" },
 
     { "src": "/(.*)", "dest": "$1" }
   ]
