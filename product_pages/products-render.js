@@ -2,10 +2,20 @@
 // import {tees,cargos,hoodies} from '../data/products.js';
 // let API_URI = window.location.origin;
 
-let type = JSON.parse(localStorage.getItem('product_type'));
+function safeParse(key, def) {
+    try {
+        let item = localStorage.getItem(key);
+        if (!item || item === "[object Object]") return def;
+        return JSON.parse(item);
+    } catch (e) {
+        localStorage.removeItem(key);
+        return def;
+    }
+}
+let type = safeParse('product_type', null);
 console.log(type);
-let favList = JSON.parse(localStorage.getItem("favList")) || {};
-let cart = JSON.parse(localStorage.getItem('cart')) || {};
+let favList = safeParse("favList", {});
+let cart = safeParse('cart', {});
 
 // Normalize cart data structure
 Object.keys(cart).forEach(productId => {
