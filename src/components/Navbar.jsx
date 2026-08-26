@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { StoreContext } from '../context/StoreContext';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function Navbar() {
   const { cart, favorites, searchQuery, setSearchQuery } = useContext(StoreContext);
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
   
   // Calculate total items in cart (accounting for quantities)
   const cartCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
@@ -54,12 +55,12 @@ function Navbar() {
               </div>
             </Link>
           </div>
-          <div className="mobile-menu-toggle">
+          <div className="mobile-menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
               <span></span><span></span><span></span>
           </div>
         </div>
       </div>
-      <nav className="nav-drop-down" id="navDropDown">
+      <nav className={`nav-drop-down ${menuOpen ? 'open' : ''}`} id="navDropDown">
           <ul>
               <li><Link to="/products?category=tees"><div>T-Shirts</div></Link></li>
               <li><Link to="/products?category=hoodies"><div>Hoodies</div></Link></li>
@@ -74,4 +75,5 @@ function Navbar() {
   );
 }
 export default Navbar;
+
 

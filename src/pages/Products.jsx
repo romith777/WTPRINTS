@@ -110,10 +110,10 @@ function Products() {
   return (
     <div>
       <Navbar />
-      <div className="browse-content" id="main" style={{paddingTop: '80px', display: 'flex', gap: '30px', padding: '100px 5vw'}}>
+      <div className="browse-content" id="main" style={{paddingTop: '80px', padding: '100px 5vw'}}>
         
         {/* SIDEBAR */}
-        <aside className="filter-section" style={{width: '280px', flexShrink: 0}}>
+        <aside className="filter-section">
           <div className="filter-sticky" style={{position: 'sticky', top: '100px'}}>
             <h2 className="filter-title" style={{fontSize: '24px', fontWeight: 'bold', marginBottom: '20px'}}>Filters</h2>
             
@@ -215,7 +215,7 @@ function Products() {
         </aside>
         
         {/* MAIN PRODUCTS GRID */}
-        <main className="products-main" style={{flex: 1}}>
+        <main className="products-main">
           <div className="products-header" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '20px', borderBottom: '1px solid #eee', marginBottom: '30px'}}>
             <h1 className="products-title js-products-title" style={{fontFamily: 'Boldonse, sans-serif', textTransform: 'uppercase', margin: 0, fontSize: '32px'}}>{categoryTitle}</h1>
             <p className="products-count" style={{color: '#666'}}><span>{filteredProducts.length}</span> Products</p>
@@ -250,4 +250,5 @@ function Products() {
   );
 }
 export default Products;
+
 
