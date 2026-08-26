@@ -34,7 +34,7 @@ export function StoreProvider({ children }) {
   }, [favorites]);
 
   useEffect(() => {
-    fetch("http://localhost:5510/api/products")
+    fetch("/api/products")
       .then(res => res.json())
       .then(data => {
         if(data.success && data.products) {
@@ -79,3 +79,4 @@ export function StoreProvider({ children }) {
     </StoreContext.Provider>
   );
 }
+
