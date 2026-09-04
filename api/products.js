@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+﻿import { MongoClient } from 'mongodb';
 
 let cachedClient = null;
 
@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   // Setup CORS just in case
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
   
   if (req.method !== 'GET') {
     return res.status(405).json({ success: false, message: 'Method not allowed' });
@@ -60,3 +61,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, error: "Failed to connect to database" });
   }
 }
+

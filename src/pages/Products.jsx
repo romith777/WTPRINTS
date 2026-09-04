@@ -1,4 +1,4 @@
-import React, { useState, useContext, useMemo } from 'react';
+﻿import React, { useState, useContext, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
@@ -7,7 +7,7 @@ import { StoreContext } from '../context/StoreContext';
 
 function Products() {
   const [searchParams] = useSearchParams();
-  const { allProducts, searchQuery } = useContext(StoreContext);
+  const { allProducts, searchQuery, isLoading } = useContext(StoreContext);
   
   // Extract URL category (e.g. "?category=tees")
   const urlCategory = searchParams.get('category');
@@ -250,5 +250,6 @@ function Products() {
   );
 }
 export default Products;
+
 
 

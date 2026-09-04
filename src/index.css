@@ -1,0 +1,93 @@
+
+/* Responsive Mobile Navigation Fixes */
+@media (max-width: 768px) {
+    .navtotal {
+        min-height: 70px;
+    }
+    .navbar {
+        padding: 10px 15px;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+    
+    /* Hide desktop-specific components on mobile to clear space */
+    .nav-components > a {
+        display: none; 
+    }
+    
+    /* Search bar moves below the header, full width */
+    .search-bar {
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 10px 15px;
+        background: white;
+        border-bottom: 1px solid #e0e0e0;
+        box-sizing: border-box;
+        max-width: 100%;
+        z-index: 999;
+    }
+    
+    /* Fix mobile menu toggle to display properly */
+    .mobile-menu-toggle {
+        display: flex !important;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        padding: 5px;
+        z-index: 1001;
+    }
+    
+    .mobile-menu-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: #ee0652;
+        transition: all 0.3s ease;
+    }
+    
+    /* Dropdown container */
+    .nav-drop-down {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        background: white;
+        position: absolute;
+        top: 130px; /* Below navbar + search */
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        z-index: 998;
+    }
+    
+    .nav-drop-down.open {
+        max-height: 1000px; /* Big enough to fit everything */
+    }
+    
+    /* Make the list vertical on mobile */
+    .nav-drop-down ul {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+        padding: 20px 0;
+    }
+    
+    /* Extra mobile links (My Designs, Login) */
+    .mobile-extra-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eaeaea;
+        width: 80%;
+    }
+}
+
+/* Hide mobile extra links on desktop */
+@media (min-width: 769px) {
+    .mobile-extra-links {
+        display: none !important;
+    }
+}

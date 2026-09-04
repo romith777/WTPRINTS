@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+﻿import React, { createContext, useState, useEffect } from 'react';
 
 export const StoreContext = createContext();
 
@@ -24,6 +24,7 @@ export function StoreProvider({ children }) {
   });
   
   const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     sessionStorage.setItem('wtp-react-cart', JSON.stringify(cart));
@@ -34,14 +35,15 @@ export function StoreProvider({ children }) {
   }, [favorites]);
 
   useEffect(() => {
-    fetch("/api/products")
+    fetch('/api/products')
       .then(res => res.json())
       .then(data => {
         if(data.success && data.products) {
           setAllProducts(data.products);
         }
+        setIsLoading(false);
       })
-      .catch(err => console.error("Error fetching backend products:", err));
+      .catch(err => { console.error('Error fetching backend products:', err); setIsLoading(false); });
   }, []);
 
   const addToCart = (product) => {
@@ -73,10 +75,12 @@ export function StoreProvider({ children }) {
   return (
     <StoreContext.Provider value={{ 
       cart, favorites, addToCart, updateQuantity, removeFromCart, toggleFavorite,
-      allProducts, searchQuery, setSearchQuery
+      allProducts, searchQuery, setSearchQuery, isLoading
     }}>
       {children}
     </StoreContext.Provider>
   );
 }
+
+
 
