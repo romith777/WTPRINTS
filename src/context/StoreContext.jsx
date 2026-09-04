@@ -24,6 +24,8 @@ export function StoreProvider({ children }) {
   });
   
   const [searchQuery, setSearchQuery] = useState("");
+  const [token, setToken] = useState(() => localStorage.getItem('wtp-token') || "");
+  useEffect(() => { localStorage.setItem('wtp-token', token); }, [token]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -75,12 +77,13 @@ export function StoreProvider({ children }) {
   return (
     <StoreContext.Provider value={{ 
       cart, favorites, addToCart, updateQuantity, removeFromCart, toggleFavorite,
-      allProducts, searchQuery, setSearchQuery, isLoading
+      allProducts, searchQuery, setSearchQuery, isLoading, token, setToken
     }}>
       {children}
     </StoreContext.Provider>
   );
 }
+
 
 
 

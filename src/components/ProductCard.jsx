@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+﻿import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { StoreContext } from '../context/StoreContext';
 
@@ -32,22 +32,22 @@ function ProductCard({ _id, image, name, brandName, about, priceCents }) {
         border: '1px solid #eaeaea',
         overflow: 'hidden',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: 'column', height: '100%',
         width: '100%',
         boxSizing: 'border-box'
       }}
     >
-      <div style={{ width: '100%', aspectRatio: '1/1', padding: 0, margin: 0, backgroundColor: '#fdfdfd', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', aspectRatio: '1/1.25', padding: 0, margin: 0, backgroundColor: '#fdfdfd', boxSizing: 'border-box' }}>
         <Link to={`/product/${_id}`} style={{ display: 'block', width: '100%', height: '100%' }}>
           <img src={imageSrc} alt={name || 'Product'} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         </Link>
       </div>
       
-      <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', backgroundColor: '#fff', width: '100%', boxSizing: 'border-box', flex: 1 }}>
+      <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#fff', width: '100%', boxSizing: 'border-box', flex: 1 }}>
         
         {/* Top Row: Brand, Title, Wishlist */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', maxWidth: '85%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '3px', maxWidth: '85%' }}>
             <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 'bold', color: '#111', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{brandName || name}</h3>
             <p style={{ margin: 0, fontSize: '13px', color: '#777', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{about || 'Premium Quality'}</p>
           </div>
@@ -98,3 +98,4 @@ function ProductCard({ _id, image, name, brandName, about, priceCents }) {
   );
 }
 export default ProductCard;
+

@@ -3,12 +3,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { StoreContext } from '../context/StoreContext';
 
 function Navbar() {
-  const { cart, favorites, searchQuery, setSearchQuery } = useContext(StoreContext);
+  const { cart, favorites, searchQuery, setSearchQuery, token, setToken } = useContext(StoreContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   
-  // Close menu when route changes
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname, location.search]);
@@ -37,12 +36,19 @@ function Navbar() {
         </div>
         
         <div className="nav-components">
-          <Link to="#">
+          <a href={token ? "https://wtprints-de.vercel.app" : "/login"} style={{textDecoration: 'none', color: '#111'}}>
             <div><div><p style={{ fontSize: 'large' }}>My Designs</p></div></div>
-          </Link>
-          <Link to="/login" className="login-token">
-            <div><div><p style={{ fontSize: 'large' }} className="login-token-info">Sign in/up</p></div></div>
-          </Link>
+          </a>
+          
+          {token ? (
+            <div onClick={() => setToken("")} className="login-token" style={{cursor:"pointer"}}>
+              <div><div><p style={{ fontSize: 'large' }} className="login-token-info">Logout</p></div></div>
+            </div>
+          ) : (
+            <Link to="/login" className="login-token">
+              <div><div><p style={{ fontSize: 'large' }} className="login-token-info">Sign in/up</p></div></div>
+            </Link>
+          )}
           
           <div className="nav-icons">
             <Link to="/cart">
@@ -62,7 +68,6 @@ function Navbar() {
               </div>
             </Link>
             
-            {/* Hamburger Icon */}
             <div className="mobile-menu-toggle" style={{display: 'none'}} onClick={() => setMenuOpen(!menuOpen)}>
               <span style={{ transform: menuOpen ? 'rotate(45deg) translate(5px, 6px)' : 'none' }}></span>
               <span style={{ opacity: menuOpen ? 0 : 1 }}></span>
@@ -72,13 +77,15 @@ function Navbar() {
         </div>
       </div>
       
-      {/* Categories Dropdown & Mobile Menu */}
       <nav className={"nav-drop-down " + (menuOpen ? "open" : "")} id="navDropDown">
         <ul>
-          {/* Shown only on mobile inside the dropdown */}
           <div className="mobile-extra-links">
-             <Link to="#" style={{textDecoration: 'none', color: '#111', fontWeight: 'bold'}}>My Designs</Link>
-             <Link to="/login" style={{textDecoration: 'none', color: '#111', fontWeight: 'bold'}}>Sign in / up</Link>
+             <a href={token ? "https://wtprints-de.vercel.app" : "/login"} style={{textDecoration: "none", color: "#111", fontWeight: "bold"}}>My Designs</a>
+             {token ? (
+               <span onClick={() => { setToken(""); setMenuOpen(false); }} style={{textDecoration: "none", color: "#111", fontWeight: "bold", cursor: "pointer"}}>Logout</span>
+             ) : (
+               <Link to="/login" style={{textDecoration: "none", color: "#111", fontWeight: "bold"}}>Sign in / up</Link>
+             )}
           </div>
           <li><Link to="/products?category=tees"><div>T-Shirts</div></Link></li>
           <li><Link to="/products?category=hoodies"><div>Hoodies</div></Link></li>

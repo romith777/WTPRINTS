@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
@@ -39,13 +39,45 @@ function Home() {
               <Link to="/products?category=tees"><img src="/assets/Tshirt.jpg" alt="Tshirt" id="slide-4" className="slide" /></Link>
               <Link to="/products?category=jeans"><img src="/assets/Jeans.jpg" alt="Jeans" id="slide-5" className="slide" /></Link>
             </div>
-            <div className="slider-nav">
-                <div id="slide1"></div>
-                <div id="slide2"></div>
-                <div id="slide3"></div>
-                <div id="slide4"></div>
-                <div id="slide5"></div>
-            </div>
+                      </div>
+<div className="slider-nav">
+            <a href="#slide-1"><div></div></a>
+            <a href="#slide-2"><div></div></a>
+            <a href="#slide-3"><div></div></a>
+            <a href="#slide-4"><div></div></a>
+            <a href="#slide-5"><div></div></a>
+          </div>
+        </section>
+
+        {/* Shop By Category Section */}
+        <section style={{padding: '40px 20px', maxWidth: '1200px', margin: '0 auto'}}>
+          <h2 style={{fontFamily: 'Boldonse, sans-serif', fontSize: 'clamp(24px, 4vw, 32px)', textAlign: 'center', marginBottom: '30px', color: '#111', textTransform: 'uppercase'}}>Shop By Category</h2>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '20px'}}>
+            
+            <Link to="/products?category=tees" style={{textDecoration: 'none'}}>
+              <div style={{backgroundColor: '#f8f8f8', padding: '30px 20px', borderRadius: '12px', textAlign: 'center', transition: 'transform 0.3s', cursor: 'pointer', border: '1px solid #eaeaea'}} onMouseOver={(e)=>e.currentTarget.style.transform='translateY(-5px)'} onMouseOut={(e)=>e.currentTarget.style.transform='none'}>
+                <h3 style={{fontFamily: 'League Spartan, sans-serif', color: '#ee0652', margin: 0, fontSize: '20px', fontWeight: 'bold'}}>T-Shirts</h3>
+              </div>
+            </Link>
+            
+            <Link to="/products?category=hoodies" style={{textDecoration: 'none'}}>
+              <div style={{backgroundColor: '#f8f8f8', padding: '30px 20px', borderRadius: '12px', textAlign: 'center', transition: 'transform 0.3s', cursor: 'pointer', border: '1px solid #eaeaea'}} onMouseOver={(e)=>e.currentTarget.style.transform='translateY(-5px)'} onMouseOut={(e)=>e.currentTarget.style.transform='none'}>
+                <h3 style={{fontFamily: 'League Spartan, sans-serif', color: '#ee0652', margin: 0, fontSize: '20px', fontWeight: 'bold'}}>Hoodies</h3>
+              </div>
+            </Link>
+            
+            <Link to="/products?category=cargos" style={{textDecoration: 'none'}}>
+              <div style={{backgroundColor: '#f8f8f8', padding: '30px 20px', borderRadius: '12px', textAlign: 'center', transition: 'transform 0.3s', cursor: 'pointer', border: '1px solid #eaeaea'}} onMouseOver={(e)=>e.currentTarget.style.transform='translateY(-5px)'} onMouseOut={(e)=>e.currentTarget.style.transform='none'}>
+                <h3 style={{fontFamily: 'League Spartan, sans-serif', color: '#ee0652', margin: 0, fontSize: '20px', fontWeight: 'bold'}}>Cargos</h3>
+              </div>
+            </Link>
+            
+            <Link to="/products?category=jeans" style={{textDecoration: 'none'}}>
+              <div style={{backgroundColor: '#f8f8f8', padding: '30px 20px', borderRadius: '12px', textAlign: 'center', transition: 'transform 0.3s', cursor: 'pointer', border: '1px solid #eaeaea'}} onMouseOver={(e)=>e.currentTarget.style.transform='translateY(-5px)'} onMouseOut={(e)=>e.currentTarget.style.transform='none'}>
+                <h3 style={{fontFamily: 'League Spartan, sans-serif', color: '#ee0652', margin: 0, fontSize: '20px', fontWeight: 'bold'}}>Jeans</h3>
+              </div>
+            </Link>
+
           </div>
         </section>
 
@@ -75,3 +107,5 @@ function Home() {
   );
 }
 export default Home;
+
+
