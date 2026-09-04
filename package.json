@@ -11,6 +11,8 @@
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
     },
     "dependencies": {
+        "bcryptjs": "^3.0.3",
+        "jsonwebtoken": "^9.0.3",
         "mongodb": "^7.6.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",

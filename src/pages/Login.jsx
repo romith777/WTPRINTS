@@ -1,21 +1,49 @@
 import React, { useState, useContext } from 'react';
+import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { StoreContext } from '../context/StoreContext';
-import Navbar from '../components/Navbar';
 
 function Login() {
-  
   const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setToken } = useContext(StoreContext);
 
-  const handleAuth = (e) => {
+  const handleSubmit = async (e, type) => {
     e.preventDefault();
-    // Simulate API call for now (since there is no /api/login endpoint in Vercel yet)
-    setToken("mock-jwt-token-123");
-    navigate('/');
-  };
+    setError('');
+    setLoading(true);
 
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const endpoint = type === 'login' ? '/api/login' : '/api/signup';
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setToken(result.token);
+        // Optional: Save user info if needed
+        if (result.user) {
+          localStorage.setItem('wt_user', JSON.stringify(result.user));
+        }
+        navigate('/');
+      } else {
+        setError(result.message || 'Authentication failed');
+      }
+    } catch (err) {
+      setError('Network error. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="new-body">
@@ -30,6 +58,12 @@ function Login() {
             <div className="login-signup-content">
               <div className="slider-change"></div>
               
+              {error && (
+                <div style={{color: 'red', textAlign: 'center', marginBottom: '15px', backgroundColor: '#ffeef0', padding: '10px', borderRadius: '5px'}}>
+                  {error}
+                </div>
+              )}
+
               {isLogin ? (
                 <div className="login-box" style={{ display: 'block' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -38,10 +72,12 @@ function Login() {
                       <div><p style={{ color: 'grey', fontSize: '20px' }}>Login to resume your journey.</p></div>
                     </div>
                     
-                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={handleAuth}>
-                      <input name="username" type="text" placeholder="UserName" required />
+                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={(e) => handleSubmit(e, 'login')}>
+                      <input name="username" type="text" placeholder="Username or Email" required />
                       <input name="password" type="password" placeholder="Password" required />
-                      <button className="login-button" type="submit">Login</button>
+                      <button className="login-button" type="submit" disabled={loading}>
+                        {loading ? 'Logging in...' : 'Login'}
+                      </button>
                     </form>
                   </div>
                   
@@ -52,7 +88,7 @@ function Login() {
                   </div>
                   
                   <div style={{ marginTop: '40px' }}>
-                    <button className="login-button in-login-signup-button" onClick={() => setIsLogin(false)}>
+                    <button className="login-button in-login-signup-button" onClick={() => { setIsLogin(false); setError(''); }}>
                       Signup
                     </button>
                   </div>
@@ -65,11 +101,13 @@ function Login() {
                       <div><p style={{ color: 'grey', fontSize: '20px' }}>Join us to be a part of our family.</p></div>
                     </div>
                     
-                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={handleAuth}>
-                      <input name="username" type="text" placeholder="Name" required />
+                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={(e) => handleSubmit(e, 'signup')}>
+                      <input name="username" type="text" placeholder="Username" required />
                       <input name="email" type="email" placeholder="Email" required />
                       <input name="password" type="password" placeholder="Password" required />
-                      <button className="login-button" type="submit">Sign Up</button>
+                      <button className="login-button" type="submit" disabled={loading}>
+                        {loading ? 'Signing up...' : 'Sign Up'}
+                      </button>
                     </form>
                   </div>
                   
@@ -80,7 +118,7 @@ function Login() {
                   </div>
                   
                   <div style={{ marginTop: '40px' }}>
-                    <button className="login-button in-signup-login-button" onClick={() => setIsLogin(true)}>
+                    <button className="login-button in-signup-login-button" onClick={() => { setIsLogin(true); setError(''); }}>
                       Login
                     </button>
                   </div>
