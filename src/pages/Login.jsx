@@ -1,8 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { StoreContext } from '../context/StoreContext';
 import Navbar from '../components/Navbar';
 
 function Login() {
+  
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
+  const { setToken } = useContext(StoreContext);
+
+  const handleAuth = (e) => {
+    e.preventDefault();
+    // Simulate API call for now (since there is no /api/login endpoint in Vercel yet)
+    setToken("mock-jwt-token-123");
+    navigate('/');
+  };
+
 
   return (
     <div className="new-body">
@@ -25,7 +38,7 @@ function Login() {
                       <div><p style={{ color: 'grey', fontSize: '20px' }}>Login to resume your journey.</p></div>
                     </div>
                     
-                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={(e) => e.preventDefault()}>
+                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={handleAuth}>
                       <input name="username" type="text" placeholder="UserName" required />
                       <input name="password" type="password" placeholder="Password" required />
                       <button className="login-button" type="submit">Login</button>
@@ -52,7 +65,7 @@ function Login() {
                       <div><p style={{ color: 'grey', fontSize: '20px' }}>Join us to be a part of our family.</p></div>
                     </div>
                     
-                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={(e) => e.preventDefault()}>
+                    <form className="input-holder" style={{ gap: '20px' }} onSubmit={handleAuth}>
                       <input name="username" type="text" placeholder="Name" required />
                       <input name="email" type="email" placeholder="Email" required />
                       <input name="password" type="password" placeholder="Password" required />
