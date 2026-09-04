@@ -11,7 +11,7 @@ function Products() {
   
   // Extract URL category (e.g. "?category=tees")
   const urlCategory = searchParams.get('category');
-  const categoryTitle = urlCategory ? urlCategory.toUpperCase() : 'ALL PRODUCTS';
+  const categoryTitle = (searchQuery && searchQuery.trim().length > 0) ? `SEARCH: ${searchQuery}` : (urlCategory ? urlCategory.toUpperCase() : 'ALL PRODUCTS');
 
   // State for filters
   const [maxPrice, setMaxPrice] = useState(5000);
@@ -110,7 +110,7 @@ function Products() {
   return (
     <div>
       <Navbar />
-      <div className="browse-content" id="main" style={{paddingTop: '80px', padding: '40px 5vw'}}>
+      <div className="browse-content" id="main" style={{paddingTop: '80px', padding: '40px 5vw', maxWidth: '1600px', margin: '0 auto'}}>
         
         {/* SIDEBAR */}
         <aside className="filter-section">
@@ -259,21 +259,25 @@ function Products() {
                 <button onClick={clearFilters} style={{marginTop: '20px', padding: '10px 20px', backgroundColor: '#ee0652', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold'}}>Reset Filters</button>
               </div>
               
-              {suggestedFallback.length > 0 && (
-                <div>
-                  <h2 style={{fontFamily: 'Boldonse, sans-serif', textTransform: 'uppercase', fontSize: '24px', marginBottom: '20px'}}>Check out these instead</h2>
-                  <div className="browsing-section" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '25px'}}>
-                    {suggestedFallback.map(p => <ProductCard key={p._id} {...p} />)}
-                  </div>
-                </div>
-              )}
+
             </div>
           ) : (
             <div className="browsing-section" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '25px'}}>
               {filteredProducts.map(p => <ProductCard key={p._id} {...p} />)}
             </div>
           )}
+        
+          {/* ALWAYS SHOW RELATED PRODUCTS AT BOTTOM */}
+          {suggestedFallback.length > 0 && (
+            <div style={{marginTop: '60px', paddingTop: '40px', borderTop: '1px solid #eee', width: '100%'}}>
+              <h2 style={{fontFamily: 'Boldonse, sans-serif', textTransform: 'uppercase', fontSize: '24px', marginBottom: '30px', textAlign: 'center'}}>You Might Also Like</h2>
+              <div className="browsing-section" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '25px', width: '100%'}}>
+                {suggestedFallback.map(p => <ProductCard key={p._id} {...p} />)}
+              </div>
+            </div>
+          )}
         </main>
+
       </div>
       <Footer />
     </div>
