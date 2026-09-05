@@ -41,9 +41,9 @@ function Navbar() {
           </a>
           
           {token ? (
-            <div onClick={() => setToken("")} className="login-token" style={{cursor:"pointer"}}>
-              <div><div><p style={{ fontSize: 'large' }} className="login-token-info">Logout</p></div></div>
-            </div>
+            <Link to="/profile" className="login-token" style={{cursor:"pointer", textDecoration: 'none', color: '#111'}}>
+              <div><div><p style={{ fontSize: 'large' }} className="login-token-info">My Account</p></div></div>
+            </Link>
           ) : (
             <Link to="/login" className="login-token">
               <div><div><p style={{ fontSize: 'large' }} className="login-token-info">Sign in/up</p></div></div>
@@ -82,7 +82,7 @@ function Navbar() {
           <div className="mobile-extra-links">
              <a href={token ? "https://wtprints-de.vercel.app" : "/login"} style={{textDecoration: "none", color: "#111", fontWeight: "bold"}}>My Designs</a>
              {token ? (
-               <span onClick={() => { setToken(""); setMenuOpen(false); }} style={{textDecoration: "none", color: "#111", fontWeight: "bold", cursor: "pointer"}}>Logout</span>
+               <Link to="/profile" onClick={() => setMenuOpen(false)} style={{textDecoration: "none", color: "#111", fontWeight: "bold"}}>My Account</Link>
              ) : (
                <Link to="/login" style={{textDecoration: "none", color: "#111", fontWeight: "bold"}}>Sign in / up</Link>
              )}

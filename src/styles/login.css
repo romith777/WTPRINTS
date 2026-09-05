@@ -111,7 +111,6 @@ p{
 
 .login-button:hover, .signup-button:hover{
     background-color: #c00545;
-    transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(238, 6, 82, 0.3);
 }
 
@@ -125,7 +124,6 @@ p{
 .in-login-signup-button:hover, .in-signup-login-button:hover{
     background-color: #ee0652;
     color: white;
-    transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(238, 6, 82, 0.2);
 }
 
