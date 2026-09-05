@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     const token = authHeader.split(' ')[1];
     let userId;
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key-for-dev');
       userId = decoded.userId;
     } catch (e) {
       return res.status(401).json({ error: 'Invalid token' });
