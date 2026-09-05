@@ -59,7 +59,7 @@ function ProductCard({ _id, image, name, brandName, about, priceCents }) {
             aria-label="Toggle Favorite"
           >
             {isFav ? (
-              <img src="/assets/favourites-icon-click.png" alt="Favorited" style={{width: '20px', height: '20px'}} />
+              <img src="/assets/favourites-icon.png" alt="Favorited" style={{width: '20px', height: '20px'}} />
             ) : (
               <img src="/assets/favourites-icon-unclick.png" alt="Add to Favorites" style={{width: '20px', height: '20px'}} />
             )}
@@ -99,3 +99,4 @@ function ProductCard({ _id, image, name, brandName, about, priceCents }) {
 }
 
 export default ProductCard;
+
