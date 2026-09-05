@@ -204,8 +204,8 @@ function UserProfile() {
               </div>
               
               <div className="profile-logout">
-                <div className="profile-nav-item" onClick={handleLogout} style={{color: '#d32f2f'}}>
-                  Logout <span>🚪</span>
+                <div className="profile-nav-item logout-btn" onClick={handleLogout}>
+                  Logout
                 </div>
               </div>
             </nav>
