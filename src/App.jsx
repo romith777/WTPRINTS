@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
 import Home from './pages/Home';
@@ -22,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/products" element={<Products />} />
@@ -32,6 +33,7 @@ function App() {
   );
 }
 export default App;
+
 
 
 
