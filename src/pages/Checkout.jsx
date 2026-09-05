@@ -80,9 +80,12 @@ function Checkout() {
   };
 
   return (
-    <div className="payment-body">
-      <main className="payment-form-wrap">
-        <h1 className="payment-page-title">Checkout</h1>
+    <div>
+      <div style={{ maxWidth: '1600px', margin: '0 auto', padding: '40px clamp(15px, 3vw, 40px) 0' }}>
+        <h1 className="payment-page-title" style={{ margin: 0 }}>Checkout</h1>
+      </div>
+      <div className="payment-body" style={{ paddingTop: '20px' }}>
+        <main className="payment-form-wrap">
         <form id="checkout-form" onSubmit={handleSubmit} noValidate>
           
           <div className="payment-card">
@@ -223,6 +226,7 @@ function Checkout() {
               <Link to="/cart" className="continue-shopping">← Back to Cart</Link>
           </div>
       </aside>
+      </div>
     </div>
   );
 }
