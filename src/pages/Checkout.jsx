@@ -97,7 +97,7 @@ function Checkout() {
                   </div>
                   <div className="field-group">
                       <label htmlFor="email">Email Address *</label>
-                      <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder="you@email.com" />
+                      <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder="you@email.com" readOnly style={{backgroundColor: '#f5f5f5', color: '#888', cursor: 'not-allowed'}} />
                   </div>
                   <div className="field-group">
                       <label htmlFor="phone">Phone Number *</label>

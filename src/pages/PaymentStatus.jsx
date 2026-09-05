@@ -6,7 +6,7 @@ function PaymentStatus() {
   const [searchParams] = useSearchParams();
   const status = searchParams.get('status') || 'processing';
   const navigate = useNavigate();
-  const { cart } = useContext(StoreContext);
+  const { cart, clearCart } = useContext(StoreContext);
   
   const [displayStatus, setDisplayStatus] = useState(status === 'initiate' ? 'processing' : status);
   const initiated = useRef(false);
@@ -15,7 +15,7 @@ function PaymentStatus() {
     if (status === 'initiate' && !initiated.current) {
       initiated.current = true;
       setDisplayStatus('processing');
-      initiateRazorpay();
+      initiatePaymentFlow();
     } else if (status !== 'initiate') {
       setDisplayStatus(status);
     }
@@ -31,7 +31,7 @@ function PaymentStatus() {
     });
   };
 
-  const initiateRazorpay = async () => {
+  const initiatePaymentFlow = async () => {
     if (cart.length === 0) {
       navigate('/payment-status?status=failed');
       return;
@@ -48,69 +48,30 @@ function PaymentStatus() {
       formData = JSON.parse(localStorage.getItem('checkoutFormData')) || {};
     } catch(e) {}
 
-    const res = await loadRazorpay();
-    if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
-      navigate('/payment-status?status=failed');
-      return;
-    }
-
+    // --- MOCK RAZORPAY / PLACE ORDER DIRECTLY ---
     try {
-      const orderRes = await fetch('/api/create-order', {
+      // We assume Razorpay is completed and just place the order in the database directly for now.
+      const orderRes = await fetch('/api/place-order', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: total })
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('wtp-token') || ''}` },
+        body: JSON.stringify({ 
+          amount: total,
+          cart: cart,
+          shippingDetails: formData
+        })
       });
       const order = await orderRes.json();
       
-      if (!order.id) {
-        alert("Server error. Check your Razorpay keys.");
-        navigate('/payment-status?status=failed');
-        return;
+      if (order.success) {
+        // We simulate a secure gateway connection delay so the UI feels authentic
+        setTimeout(() => {
+          navigate('/payment-status?status=success');
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          navigate('/payment-status?status=failed');
+        }, 1500);
       }
-
-      const options = {
-        key: order.key_id || 'rzp_test_dummy', 
-        amount: order.amount,
-        currency: order.currency,
-        name: "WTPRINTS",
-        description: "Secure Payment",
-        order_id: order.id,
-        handler: async function (response) {
-          setDisplayStatus('processing');
-          try {
-            const verifyRes = await fetch('/api/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(response)
-            });
-            const verify = await verifyRes.json();
-            if (verify.status === "ok") {
-              navigate('/payment-status?status=success');
-            } else {
-              navigate('/payment-status?status=failed');
-            }
-          } catch(e) {
-            navigate('/payment-status?status=failed');
-          }
-        },
-        modal: {
-          ondismiss: function() {
-            navigate('/payment-status?status=cancelled');
-          }
-        },
-        prefill: {
-          name: formData.fullName || "",
-          email: formData.email || "",
-          contact: formData.phone || ""
-        },
-        theme: { color: "#ee0652" }
-      };
-      const rzp = new window.Razorpay(options);
-      rzp.on('payment.failed', function (response){
-        navigate('/payment-status?status=failed');
-      });
-      rzp.open();
     } catch (err) {
       navigate('/payment-status?status=failed');
     }
@@ -118,6 +79,10 @@ function PaymentStatus() {
 
   const renderContent = () => {
     if (displayStatus === 'success') {
+      // Clear cart when viewing success page (safe to call multiple times if already empty)
+      if (cart.length > 0) {
+        setTimeout(() => clearCart(), 100);
+      }
       return (
         <>
           <div style={{width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#e8f5e9', color: '#2e7d32', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', margin: '0 auto 20px'}}>

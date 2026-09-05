@@ -66,6 +66,8 @@ export function StoreProvider({ children }) {
     setCart(prev => prev.filter(item => item._id !== productId));
   };
 
+  const clearCart = () => setCart([]);
+
   const toggleFavorite = (product) => {
     setFavorites(prev => {
       const exists = prev.find(item => item._id === product._id);
@@ -76,7 +78,7 @@ export function StoreProvider({ children }) {
 
   return (
     <StoreContext.Provider value={{ 
-      cart, favorites, addToCart, updateQuantity, removeFromCart, toggleFavorite,
+      cart, favorites, addToCart, updateQuantity, removeFromCart, clearCart, toggleFavorite,
       allProducts, searchQuery, setSearchQuery, isLoading, token, setToken
     }}>
       {children}
