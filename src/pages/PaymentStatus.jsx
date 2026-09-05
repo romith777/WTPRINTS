@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { StoreContext } from '../context/StoreContext';
 
 function PaymentStatus() {
@@ -160,7 +158,8 @@ function PaymentStatus() {
         <>
           <div style={{width: '80px', height: '80px', borderRadius: '50%', border: '4px solid #f3f3f3', borderTop: '4px solid #ee0652', animation: 'spin 1s linear infinite', margin: '0 auto 20px'}} />
           <h1 style={{fontFamily: 'Boldonse, sans-serif', fontSize: '28px', color: '#111'}}>Processing Payment...</h1>
-          <p style={{color: '#666', fontSize: '16px'}}>Please wait while we connect to the secure payment gateway. Do not close this window.</p>
+          <p style={{color: '#ee0652', fontSize: '18px', fontWeight: 'bold', margin: '15px 0'}}>Please do not press back or refresh the page.</p>
+          <p style={{color: '#666', fontSize: '15px'}}>We are securely connecting to Razorpay to complete your order.</p>
           <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
         </>
       );
@@ -168,14 +167,10 @@ function PaymentStatus() {
   };
 
   return (
-    <div style={{backgroundColor: '#fafafa', minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
-      <Navbar />
-      <div style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '140px 20px 80px'}}>
+    <div style={{backgroundColor: '#fafafa', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'}}>
         <div style={{backgroundColor: 'white', padding: '60px 40px', borderRadius: '16px', boxShadow: '0 10px 40px rgba(0,0,0,0.05)', textAlign: 'center', maxWidth: '600px', width: '100%', border: '1px solid #eaeaea'}}>
           {renderContent()}
         </div>
-      </div>
-      <Footer />
     </div>
   );
 }
