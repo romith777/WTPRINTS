@@ -1,0 +1,245 @@
+.profile-page {
+    min-height: 80vh;
+    padding: 120px 5vw 80px;
+    background-color: #f9f9f9;
+    font-family: "League Spartan", sans-serif;
+}
+.profile-layout {
+    display: flex;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Sidebar */
+.profile-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    background: white;
+    border-radius: 12px;
+    padding: 20px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #eaeaea;
+    height: fit-content;
+}
+.profile-user-card {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #ee0652;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 auto 15px;
+    font-family: "Boldonse", sans-serif;
+}
+.profile-nav-item {
+    padding: 15px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    color: #555;
+    border-left: 4px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.profile-nav-item:hover {
+    background-color: #fdfdfd;
+    color: #ee0652;
+}
+.profile-nav-item.active {
+    color: #ee0652;
+    border-left: 4px solid #ee0652;
+    background-color: #fff5f8;
+}
+.profile-logout {
+    margin-top: 10px;
+    border-top: 1px solid #eaeaea;
+    padding-top: 10px;
+}
+.profile-logout .profile-nav-item:hover {
+    color: #d32f2f;
+    background-color: #ffebee;
+}
+
+/* Main Content */
+.profile-content {
+    flex: 1;
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    border: 1px solid #eaeaea;
+    min-height: 500px;
+}
+.profile-header {
+    font-family: "Boldonse", sans-serif;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #111;
+    text-transform: uppercase;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+/* Dashboard Cards */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.dashboard-card {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+}
+.dashboard-card h3 {
+    font-size: 32px;
+    color: #ee0652;
+    margin-bottom: 10px;
+}
+.dashboard-card p {
+    color: #666;
+    font-weight: 600;
+}
+
+/* Settings Forms */
+.settings-section {
+    margin-bottom: 40px;
+    background: #fdfdfd;
+    padding: 25px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+.settings-section h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+.settings-form-group {
+    margin-bottom: 20px;
+}
+.settings-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+}
+.settings-form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    background-color: white;
+}
+.settings-form-group input:focus {
+    border-color: #ee0652;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #ee0652;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: inherit;
+}
+.btn-primary:hover {
+    background-color: #c00545;
+}
+.btn-secondary {
+    background-color: #111;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+}
+.btn-secondary:hover {
+    background-color: #333;
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fdfdfd;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+}
+.empty-state h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+.empty-state p {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* Help Accordion */
+.faq-item {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 20px;
+    background: #fdfdfd;
+}
+.faq-item h4 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+.faq-item p {
+    color: #666;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+    .profile-sidebar {
+        width: 100%;
+    }
+    .profile-content {
+        padding: 25px 15px;
+    }
+    .profile-page {
+        padding: 90px 15px 40px;
+    }
+}
