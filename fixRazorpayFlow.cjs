@@ -1,4 +1,79 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+const fs = require('fs');
+
+// 1. Fix create-order.js (Remove double tax/shipping)
+const createOrderCode = `import Razorpay from 'razorpay';
+
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const { amount } = req.body;
+
+    if (!amount) {
+      return res.status(400).json({ error: 'Amount is required' });
+    }
+
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_dummy',
+      key_secret: process.env.RAZORPAY_SECRET_KEY || 'dummy_secret'
+    });
+
+    // Amount sent from frontend already includes tax and shipping and is in paise/cents.
+    const options = {
+      amount: Math.round(amount),
+      currency: "INR",
+      receipt: "receipt_" + Date.now()
+    };
+
+    const order = await razorpay.orders.create(options);
+    
+    // Pass back the Key ID to the client
+    res.status(200).json({ ...order, key_id: process.env.RAZORPAY_KEY_ID });
+  } catch (err) {
+    console.error("Razorpay Create Order Error:", err);
+    res.status(500).json({ error: err.message });
+  }
+}
+`;
+fs.writeFileSync('api/create-order.js', createOrderCode, 'utf8');
+
+
+// 2. Refactor Checkout.jsx to navigate instead of launching razorpay
+let checkout = fs.readFileSync('src/pages/Checkout.jsx', 'utf8');
+
+checkout = checkout.replace(
+  /const loadRazorpay[\s\S]*?alert\("Failed to initiate payment"\);\s*setLoading\(false\);\s*\}/,
+  `const handleSubmit = (e) => {
+    e.preventDefault();
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    
+    setLoading(true);
+    localStorage.setItem('checkoutFormData', JSON.stringify(formData));
+    
+    // Navigate immediately to processing page, which will spawn Razorpay
+    setTimeout(() => {
+      navigate('/payment-status?status=initiate');
+    }, 500);
+  }`
+);
+fs.writeFileSync('src/pages/Checkout.jsx', checkout, 'utf8');
+
+
+// 3. Refactor PaymentStatus.jsx to handle 'initiate' and open Razorpay
+const paymentStatusCode = `import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -161,7 +236,7 @@ function PaymentStatus() {
           <div style={{width: '80px', height: '80px', borderRadius: '50%', border: '4px solid #f3f3f3', borderTop: '4px solid #ee0652', animation: 'spin 1s linear infinite', margin: '0 auto 20px'}} />
           <h1 style={{fontFamily: 'Boldonse, sans-serif', fontSize: '28px', color: '#111'}}>Processing Payment...</h1>
           <p style={{color: '#666', fontSize: '16px'}}>Please wait while we connect to the secure payment gateway. Do not close this window.</p>
-          <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+          <style>{\`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }\`}</style>
         </>
       );
     }
@@ -181,3 +256,5 @@ function PaymentStatus() {
 }
 
 export default PaymentStatus;
+`;
+fs.writeFileSync('src/pages/PaymentStatus.jsx', paymentStatusCode, 'utf8');

@@ -34,92 +34,19 @@ function Checkout() {
     setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const loadRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => { resolve(true); };
-      script.onerror = () => { resolve(false); };
-      document.body.appendChild(script);
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (cart.length === 0) {
       alert("Your cart is empty!");
       return;
     }
-
+    
     setLoading(true);
-    const res = await loadRazorpay();
-    if (!res) {
-      alert("Razorpay SDK failed to load. Are you online?");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const orderRes = await fetch('/api/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: total })
-      });
-      const order = await orderRes.json();
-      
-      if (!order.id) {
-        alert("Server error. Check your Razorpay keys.");
-        setLoading(false);
-        return;
-      }
-
-      const options = {
-        key: order.key_id || 'rzp_test_dummy', 
-        amount: order.amount,
-        currency: order.currency,
-        name: "WTPRINTS",
-        description: "Secure Payment",
-        order_id: order.id,
-        handler: async function (response) {
-          navigate('/payment-status?status=processing');
-          try {
-            const verifyRes = await fetch('/api/verify-payment', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(response)
-            });
-            const verify = await verifyRes.json();
-            if (verify.status === "ok") {
-              navigate('/payment-status?status=success');
-            } else {
-              navigate('/payment-status?status=failed');
-            }
-          } catch(e) {
-            navigate('/payment-status?status=failed');
-          }
-        },
-        modal: {
-          ondismiss: function() {
-            setLoading(false);
-            navigate('/payment-status?status=cancelled');
-          }
-        },
-        prefill: {
-          name: formData.fullName,
-          email: formData.email,
-          contact: formData.phone
-        },
-        theme: { color: "#ee0652" }
-      };
-      const rzp = new window.Razorpay(options);
-      rzp.on('payment.failed', function (response){
-        navigate('/payment-status?status=failed');
-      });
-      rzp.open();
-    } catch (err) {
-      alert("Failed to initiate payment");
-      setLoading(false);
-    }
+    localStorage.setItem('checkoutFormData', JSON.stringify(formData));
+    
+    setTimeout(() => {
+      navigate('/payment-status?status=initiate');
+    }, 100);
   };
 
   return (
