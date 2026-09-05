@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     if (!cachedClient) {
       cachedClient = await MongoClient.connect(uri, { serverSelectionTimeoutMS: 5000 });
     }
-    const db = cachedClient.db();
+    const db = cachedClient.db('wtprints');
     const usersCollection = db.collection('users');
 
     // Find user (allow logging in by email or username)

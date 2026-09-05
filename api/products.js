@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const db = cachedClient.db(); 
+    const db = cachedClient.db('wtprints'); 
     // Assuming the main data is in the 'products' collection based on backend code
     const collection = db.collection('products');
     
