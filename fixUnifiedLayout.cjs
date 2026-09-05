@@ -1,4 +1,6 @@
-.profile-page {
+const fs = require('fs');
+
+const cssCode = `.profile-page {
     min-height: 80vh;
     padding: 180px 5vw 80px; /* Massive top padding to completely clear the 2-tier fixed navbar */
     background-color: #f5f5f5;
@@ -269,3 +271,6 @@
         padding: 140px 15px 40px;
     }
 }
+`;
+
+fs.writeFileSync('src/styles/profile.css', cssCode, 'utf8');
