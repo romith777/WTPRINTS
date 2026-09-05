@@ -5,6 +5,8 @@ import Home from './pages/Home';
 import Login from './pages/Login'
 import UserProfile from './pages/UserProfile';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import PaymentStatus from './pages/PaymentStatus';
 import Favorites from './pages/Favorites';
 import Products from './pages/Products';
 import ProductSingle from './pages/ProductSingle';
@@ -24,6 +26,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/payment-status" element={<PaymentStatus />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductSingle />} />
