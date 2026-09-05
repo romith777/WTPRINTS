@@ -188,19 +188,19 @@ function UserProfile() {
             
             <nav style={{paddingTop: '10px'}}>
               <div className={`profile-nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
-                Dashboard <span>→</span>
+                Dashboard 
               </div>
               <div className={`profile-nav-item ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>
-                My Orders <span>→</span>
+                My Orders 
               </div>
               <div className={`profile-nav-item ${activeTab === 'designs' ? 'active' : ''}`} onClick={() => setActiveTab('designs')}>
-                My Designs <span>→</span>
+                My Designs 
               </div>
               <div className={`profile-nav-item ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>
-                Account Settings <span>→</span>
+                Account Settings 
               </div>
               <div className={`profile-nav-item ${activeTab === 'help' ? 'active' : ''}`} onClick={() => setActiveTab('help')}>
-                Help & Support <span>→</span>
+                Help & Support 
               </div>
               
               <div className="profile-logout">

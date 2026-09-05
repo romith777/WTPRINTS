@@ -1,4 +1,25 @@
-.profile-page {
+const fs = require('fs');
+
+// 1. Clean up UserProfile.jsx (Remove arrows, clean up logout)
+let jsx = fs.readFileSync('src/pages/UserProfile.jsx', 'utf8');
+
+// Remove the arrows "<span>→</span>"
+jsx = jsx.replace(/<span>→<\/span>/g, '');
+
+// Clean up Logout button in sidebar to perfectly match other items
+jsx = jsx.replace(
+  /<div className="profile-logout">[\s\S]*?<\/div>\s*<\/div>/,
+  `<div className="profile-logout">
+                <div className="profile-nav-item logout-btn" onClick={handleLogout}>
+                  Logout
+                </div>
+              </div>`
+);
+
+fs.writeFileSync('src/pages/UserProfile.jsx', jsx, 'utf8');
+
+// 2. Overhaul profile.css for the "Premium Clean" look
+const newCss = `.profile-page {
     min-height: 80vh;
     padding: 100px 5vw 80px;
     background-color: #fafafa;
@@ -268,4 +289,5 @@
     .profile-page {
         padding: 90px 15px 40px;
     }
-}
+}`;
+fs.writeFileSync('src/styles/profile.css', newCss, 'utf8');
