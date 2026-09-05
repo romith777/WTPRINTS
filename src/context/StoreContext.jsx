@@ -1,4 +1,4 @@
-﻿import React, { createContext, useState, useEffect } from 'react';
+﻿import React, { createContext, useState, useEffect, useRef } from 'react';
 
 export const StoreContext = createContext();
 
@@ -35,6 +35,30 @@ export function StoreProvider({ children }) {
   useEffect(() => {
     sessionStorage.setItem('wtp-react-favs', JSON.stringify(favorites));
   }, [favorites]);
+
+  
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    
+    if (!token) return;
+
+    const handler = setTimeout(() => {
+      fetch('/api/sync-user-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ cart, favorites })
+      }).catch(err => console.error("Failed to sync data", err));
+    }, 5000);
+
+    return () => clearTimeout(handler);
+  }, [cart, favorites, token]);
 
   useEffect(() => {
     fetch('/api/products')
@@ -78,7 +102,7 @@ export function StoreProvider({ children }) {
 
   return (
     <StoreContext.Provider value={{ 
-      cart, favorites, addToCart, updateQuantity, removeFromCart, clearCart, toggleFavorite,
+      cart, setCart, favorites, setFavorites, addToCart, updateQuantity, removeFromCart, clearCart, toggleFavorite,
       allProducts, searchQuery, setSearchQuery, isLoading, token, setToken
     }}>
       {children}

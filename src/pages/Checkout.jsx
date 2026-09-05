@@ -8,7 +8,7 @@ function formatCurrency(priceCents) {
 }
 
 function Checkout() {
-  const { cart } = useContext(StoreContext);
+  const { cart, token } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -26,6 +26,13 @@ function Checkout() {
   });
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
+
 
   useEffect(() => {
     try {

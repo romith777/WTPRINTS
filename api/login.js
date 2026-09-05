@@ -61,7 +61,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       token,
-      user: { username: user.username, email: user.email }
+      user: { username: user.username, email: user.email, cart: user.cart || [], favorites: user.favorites || [] }
     });
 
   } catch (error) {

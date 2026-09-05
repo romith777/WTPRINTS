@@ -8,7 +8,7 @@ function formatCurrency(priceCents) {
 }
 
 function Cart() {
-  const { cart, updateQuantity, removeFromCart } = useContext(StoreContext);
+  const { cart, updateQuantity, removeFromCart, token } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const itemCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
@@ -20,6 +20,11 @@ function Cart() {
   const handleCheckoutNavigate = () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
+      return;
+    }
+    if (!token) {
+      alert("Please login to proceed to checkout.");
+      navigate('/login');
       return;
     }
     navigate('/checkout');

@@ -8,7 +8,7 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setToken } = useContext(StoreContext);
+  const { setToken, setCart, setFavorites } = useContext(StoreContext);
 
   const handleSubmit = async (e, type) => {
     e.preventDefault();
@@ -30,6 +30,31 @@ function Login() {
 
       if (result.success) {
         setToken(result.token);
+        
+        // Merge Database Cart/Favorites with Local Session
+        if (result.user.cart && result.user.cart.length > 0) {
+          setCart(prev => {
+            const newCart = [...prev];
+            result.user.cart.forEach(dbItem => {
+              if (!newCart.find(localItem => localItem._id === dbItem._id && localItem.selectedSize === dbItem.selectedSize)) {
+                newCart.push(dbItem);
+              }
+            });
+            return newCart;
+          });
+        }
+        
+        if (result.user.favorites && result.user.favorites.length > 0) {
+          setFavorites(prev => {
+            const newFavs = [...prev];
+            result.user.favorites.forEach(dbItem => {
+              if (!newFavs.find(localItem => localItem._id === dbItem._id)) {
+                newFavs.push(dbItem);
+              }
+            });
+            return newFavs;
+          });
+        }
         // Optional: Save user info if needed
         if (result.user) {
           localStorage.setItem('wt_user', JSON.stringify(result.user));
