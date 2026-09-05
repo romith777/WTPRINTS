@@ -86,7 +86,7 @@ function Checkout() {
       </div>
       <div className="payment-body" style={{ paddingTop: '20px' }}>
         <main className="payment-form-wrap">
-        <form id="checkout-form" onSubmit={handleSubmit} noValidate>
+        <form id="checkout-form" onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           
           <div className="payment-card">
               <h2 className="payment-section-title">
