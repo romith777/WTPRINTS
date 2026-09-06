@@ -29,11 +29,25 @@ export default async function handler(req, res) {
     
     const client = await connectToDatabase();
     const db = client.db('wtprints');
+    const userIdStr = decoded.userId.toString();
     
-    await db.collection('users').updateOne(
-      { _id: new ObjectId(decoded.userId) },
-      { $set: { cart: cart || [], favorites: favorites || [] } }
-    );
+    // Save to dedicated 'cart' collection
+    if (cart) {
+      await db.collection('cart').updateOne(
+        { userId: userIdStr },
+        { $set: { userId: userIdStr, items: cart, updatedAt: new Date() } },
+        { upsert: true }
+      );
+    }
+    
+    // Save to dedicated 'favorites' collection
+    if (favorites) {
+      await db.collection('favorites').updateOne(
+        { userId: userIdStr },
+        { $set: { userId: userIdStr, items: favorites, updatedAt: new Date() } },
+        { upsert: true }
+      );
+    }
 
     return res.status(200).json({ success: true });
   } catch (error) {

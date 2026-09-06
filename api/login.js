@@ -51,7 +51,13 @@ export default async function handler(req, res) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
+    
+    const userIdStr = user._id.toString();
+    const cartDoc = await db.collection('cart').findOne({ userId: userIdStr });
+    const favDoc = await db.collection('favorites').findOne({ userId: userIdStr });
+    
     // Sign JWT
+
     const token = jwt.sign(
       { userId: user._id, username: user.username },
       process.env.JWT_SECRET || 'fallback-secret-key-for-dev',
@@ -61,7 +67,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       success: true,
       token,
-      user: { username: user.username, email: user.email, cart: user.cart || [], favorites: user.favorites || [] }
+      user: { username: user.username, email: user.email, cart: (cartDoc && cartDoc.items) || [], favorites: (favDoc && favDoc.items) || [] }
     });
 
   } catch (error) {

@@ -21,7 +21,27 @@ import './styles/productSinglePage.css';
 function App() {
   return (
     <StoreProvider>
-      <Toaster position="top-right" toastOptions={{ style: { fontSize: '14px', fontWeight: 'bold' } }} />
+      <Toaster 
+        position="top-right" 
+        toastOptions={{ 
+          duration: 3000,
+          style: { 
+            fontSize: '16px', 
+            padding: '16px 24px',
+            fontWeight: 'bold',
+            background: '#111',
+            color: '#fff',
+            borderRadius: '12px',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+          },
+          success: {
+            iconTheme: {
+              primary: '#ee0652',
+              secondary: '#fff',
+            },
+          }
+        }} 
+      />
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
