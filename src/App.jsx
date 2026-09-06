@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
+import { Toaster } from 'react-hot-toast';
 import Home from './pages/Home';
 import Login from './pages/Login'
 import UserProfile from './pages/UserProfile';
@@ -20,6 +21,7 @@ import './styles/productSinglePage.css';
 function App() {
   return (
     <StoreProvider>
+      <Toaster position="top-right" toastOptions={{ style: { fontSize: '14px', fontWeight: 'bold' } }} />
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />

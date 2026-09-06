@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { StoreContext } from '../context/StoreContext';
@@ -49,6 +50,7 @@ function UserProfile() {
   const handleLogout = () => {
     setToken("");
     localStorage.removeItem('wt_user');
+    toast.success('Logged out successfully');
     navigate('/');
   };
 
@@ -57,9 +59,45 @@ function UserProfile() {
     setTimeout(() => setToastMsg(''), 3000);
   };
 
-  const handleSettingUpdate = (e, type) => {
+  
+  const handleSettingUpdate = async (e, type) => {
     e.preventDefault();
-    showToast(`${type} successfully updated!`);
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    
+    if (type === 'Password') {
+      if (data.newPassword !== data.confirmPassword) {
+        toast.error("New passwords do not match!");
+        return;
+      }
+    }
+
+    const loadToast = toast.loading('Updating...');
+    try {
+      const res = await fetch('/api/update-profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ type, ...data })
+      });
+      const result = await res.json();
+      
+      if (result.success) {
+        toast.success(result.message, { id: loadToast });
+        if (type === 'Email') {
+          const updatedUser = { ...user, email: result.email };
+          setUser(updatedUser);
+          localStorage.setItem('wt_user', JSON.stringify(updatedUser));
+        }
+        e.target.reset(); // clear form
+      } else {
+        toast.error(result.message || 'Update failed', { id: loadToast });
+      }
+    } catch (err) {
+      toast.error('Network error. Try again.', { id: loadToast });
+    }
   };
 
   const renderContent = () => {
@@ -170,7 +208,7 @@ function UserProfile() {
                 </div>
                 <div className="settings-form-group">
                   <label>New Email</label>
-                  <input type="email" placeholder="Enter new email address" required />
+                  <input type="email" name="newEmail" placeholder="Enter new email address" required />
                 </div>
                 <button type="submit" className="btn-primary">Save Email</button>
               </form>
@@ -181,15 +219,15 @@ function UserProfile() {
               <form onSubmit={(e) => handleSettingUpdate(e, 'Password')}>
                 <div className="settings-form-group">
                   <label>Current Password</label>
-                  <input type="password" placeholder="••••••••" required />
+                  <input type="password" name="currentPassword" placeholder="••••••••" required />
                 </div>
                 <div className="settings-form-group">
                   <label>New Password</label>
-                  <input type="password" placeholder="••••••••" required />
+                  <input type="password" name="newPassword" placeholder="••••••••" required />
                 </div>
                 <div className="settings-form-group">
                   <label>Confirm New Password</label>
-                  <input type="password" placeholder="••••••••" required />
+                  <input type="password" name="confirmPassword" placeholder="••••••••" required />
                 </div>
                 <button type="submit" className="btn-primary">Update Password</button>
               </form>

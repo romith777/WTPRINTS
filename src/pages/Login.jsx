@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { StoreContext } from '../context/StoreContext';
 
 function Login() {
@@ -59,7 +60,8 @@ function Login() {
         if (result.user) {
           localStorage.setItem('wt_user', JSON.stringify(result.user));
         }
-        navigate('/');
+        toast.success('Successfully logged in!');
+          navigate('/');
       } else {
         setError(result.message || 'Authentication failed');
       }

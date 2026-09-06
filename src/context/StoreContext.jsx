@@ -1,4 +1,5 @@
 ﻿import React, { createContext, useState, useEffect, useRef } from 'react';
+import toast from 'react-hot-toast';
 
 export const StoreContext = createContext();
 
@@ -88,6 +89,7 @@ export function StoreProvider({ children }) {
 
   const removeFromCart = (productId) => {
     setCart(prev => prev.filter(item => item._id !== productId));
+    toast.success('Removed from cart');
   };
 
   const clearCart = () => setCart([]);
@@ -95,7 +97,11 @@ export function StoreProvider({ children }) {
   const toggleFavorite = (product) => {
     setFavorites(prev => {
       const exists = prev.find(item => item._id === product._id);
-      if (exists) return prev.filter(item => item._id !== product._id);
+      if (exists) {
+        toast.success('Removed from favorites');
+        return prev.filter(item => item._id !== product._id);
+      }
+      toast.success('Added to favorites');
       return [...prev, product];
     });
   };
