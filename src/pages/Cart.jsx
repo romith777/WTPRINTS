@@ -71,13 +71,13 @@ function Cart() {
                           <span style={{color: '#666'}}>Quantity: <strong>{product.quantity}</strong></span>
                         </div>
                         <div className="quantity-controls" style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
-                          <button className="quantity-btn minus-btn" onClick={() => updateQuantity(product._id, product.quantity - 1)} style={{padding:'5px 10px', cursor:'pointer'}}>-</button>
+                          <button className="quantity-btn minus-btn" onClick={() => updateQuantity(product._id, product.selectedSize, product.quantity - 1)} style={{padding:'5px 10px', cursor:'pointer'}}>-</button>
                           <input type="number" className="quantity-input" value={product.quantity} readOnly style={{width: '40px', textAlign: 'center', padding:'5px'}} />
-                          <button className="quantity-btn plus-btn" onClick={() => updateQuantity(product._id, product.quantity + 1)} style={{padding:'5px 10px', cursor:'pointer'}}>+</button>
+                          <button className="quantity-btn plus-btn" onClick={() => updateQuantity(product._id, product.selectedSize, product.quantity + 1)} style={{padding:'5px 10px', cursor:'pointer'}}>+</button>
                         </div>
                       </div>
                       <div className="cart-buttons">
-                        <button className="remove-product-cart-button" onClick={() => removeFromCart(product._id)} style={{backgroundColor: '#ffebee', color: '#ee0652', border: '1px solid #ee0652', padding: '5px 15px', borderRadius: '5px', cursor: 'pointer'}}>Remove</button>
+                        <button className="remove-product-cart-button" onClick={() => removeFromCart(product._id, product.selectedSize)} style={{backgroundColor: '#ffebee', color: '#ee0652', border: '1px solid #ee0652', padding: '5px 15px', borderRadius: '5px', cursor: 'pointer'}}>Remove</button>
                       </div>
                     </div>
                   </div>

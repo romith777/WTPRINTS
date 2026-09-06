@@ -75,20 +75,24 @@ export function StoreProvider({ children }) {
 
   const addToCart = (product) => {
     setCart(prev => {
-      const existing = prev.find(item => item._id === product._id);
+      const selectedSize = product.selectedSize || 'M';
+      const existing = prev.find(item => item._id === product._id && item.selectedSize === selectedSize);
       if (existing) {
-        return prev.map(item => item._id === product._id ? { ...item, quantity: item.quantity + (product.quantity || 1) } : item);
+        toast.success('Cart updated');
+        return prev.map(item => (item._id === product._id && item.selectedSize === selectedSize) ? { ...item, quantity: item.quantity + (product.quantity || 1) } : item);
       }
-      return [...prev, { ...product, quantity: product.quantity || 1, selectedSize: product.selectedSize || 'M' }];
+      toast.success('Added to cart');
+      return [...prev, { ...product, quantity: product.quantity || 1, selectedSize }];
     });
   };
 
-  const updateQuantity = (productId, newQuantity) => {
-    setCart(prev => prev.map(item => item._id === productId ? { ...item, quantity: newQuantity } : item));
+  const updateQuantity = (productId, selectedSize, newQuantity) => {
+    if (newQuantity < 1) return;
+    setCart(prev => prev.map(item => (item._id === productId && item.selectedSize === selectedSize) ? { ...item, quantity: newQuantity } : item));
   };
 
-  const removeFromCart = (productId) => {
-    setCart(prev => prev.filter(item => item._id !== productId));
+  const removeFromCart = (productId, selectedSize) => {
+    setCart(prev => prev.filter(item => !(item._id === productId && item.selectedSize === selectedSize)));
     toast.success('Removed from cart');
   };
 

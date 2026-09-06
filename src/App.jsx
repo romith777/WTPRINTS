@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { StoreProvider } from './context/StoreContext';
-import { Toaster } from 'react-hot-toast';
+import { Toaster, ToastBar, toast } from 'react-hot-toast';
 import Home from './pages/Home';
 import Login from './pages/Login'
 import UserProfile from './pages/UserProfile';
@@ -32,7 +32,8 @@ function App() {
             background: '#111',
             color: '#fff',
             borderRadius: '12px',
-            boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+            boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+            cursor: 'pointer'
           },
           success: {
             iconTheme: {
@@ -41,7 +42,13 @@ function App() {
             },
           }
         }} 
-      />
+      >
+        {(t) => (
+          <div onClick={() => toast.dismiss(t.id)}>
+            <ToastBar toast={t} />
+          </div>
+        )}
+      </Toaster>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
